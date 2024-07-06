@@ -5,13 +5,15 @@
     "main": "index.js",
     "repository": "https://github.com/Edit-Mr/EduVoice.git",
     "author": "Elvis Mao <info@elvismao.com>",
-    "license": "Apache-2.0 license ",
+    "license": "Apache-2.0",
     "scripts": {
-        "start": "node app.js"
+        "start": "node app.js",
+        "dev": "nodemon app.js"
     },
     "dependencies": {
         "express": "^4.19.2",
         "mariadb": "^3.3.1",
+        "nodemon": "^3.1.4",
         "request": "^2.88.2"
     }
 }

@@ -1,0 +1,17 @@
+{
+    "name": "EduVoice",
+    "version": "1.0.0",
+    "description": "學聲 EduVoice：利用數位技術和平台，增強學生公民參與，打造一個讓學生聲音被聽見並參與校園決策的互動環境。",
+    "main": "index.js",
+    "repository": "https://github.com/Edit-Mr/EduVoice.git",
+    "author": "Elvis Mao <info@elvismao.com>",
+    "license": "Apache-2.0 license ",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "express": "^4.19.2",
+        "mariadb": "^3.3.1",
+        "request": "^2.88.2"
+    }
+}

@@ -1,0 +1,393 @@
+{
+    "type": "carousel",
+    "contents": [
+      {
+        "type": "bubble",
+        "size": "deca",
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "image",
+              "url": "https://eduvoice.emtech.cc/static/img/footer_gradient__d5jtmfwmiqqa_medium.jpg",
+              "gravity": "center",
+              "size": "full",
+              "aspectMode": "cover",
+              "position": "absolute",
+              "aspectRatio": "1:2"
+            },
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "學聲",
+                  "color": "#222222",
+                  "size": "3xl",
+                  "wrap": true,
+                  "weight": "bold",
+                  "align": "center"
+                },
+                {
+                  "type": "text",
+                  "text": "屬於你的每日電子報",
+                  "color": "#222222",
+                  "size": "sm",
+                  "wrap": true,
+                  "align": "center"
+                }
+              ],
+              "flex": 1,
+              "alignItems": "center",
+              "justifyContent": "center"
+            },
+            {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "西苑高中",
+                  "color": "#222222",
+                  "size": "sm",
+                  "wrap": true,
+                  "align": "center"
+                },
+                {
+                  "type": "text",
+                  "text": "2024 / 5 / 12",
+                  "color": "#222222",
+                  "size": "sm",
+                  "wrap": true,
+                  "align": "center"
+                }
+              ],
+              "paddingBottom": "16px"
+            }
+          ],
+          "spacing": "none",
+          "paddingAll": "none",
+          "backgroundColor": "#5E503F"
+        },
+        "styles": {
+          "footer": {
+            "separator": false
+          }
+        }
+      },
+      {
+        "type": "bubble",
+        "size": "deca",
+        "header": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "校園公告",
+              "color": "#ffffff",
+              "align": "start",
+              "size": "xl",
+              "gravity": "center",
+              "weight": "bold"
+            },
+            {
+              "type": "text",
+              "text": "來自校網",
+              "color": "#ffffff",
+              "align": "start",
+              "size": "xs",
+              "gravity": "center",
+              "margin": "none"
+            }
+          ],
+          "backgroundColor": "#2a9d8f",
+          "paddingAll": "20px"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "西苑高中推出兩個夏令營：ESL雙語夏令營及機器人VEX IQ培訓營，限定國中學生。ESL夏令營提供主題式英語學習及雙語活動，機器人營則著重程式控制與問題解決能力。參與者需全程參加，合規者結訓後退還保證金。萬安47號防空演習將於7月22日進行。此外，高中補考相關訊息更新，包括補考名單、時間地點，重補修報名亦已公告。",
+                  "color": "#222222",
+                  "size": "sm",
+                  "wrap": true
+                }
+              ],
+              "flex": 1
+            }
+          ],
+          "spacing": "md",
+          "paddingAll": "20px"
+        },
+        "styles": {
+          "body": {
+            "backgroundColor": "#F2F4F3"
+          },
+          "footer": {
+            "separator": false
+          }
+        }
+      },
+      {
+        "type": "bubble",
+        "size": "deca",
+        "header": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "今日菜色",
+              "color": "#ffffff",
+              "align": "start",
+              "size": "xl",
+              "gravity": "center",
+              "weight": "bold"
+            },
+            {
+              "type": "text",
+              "text": "教育部校園食材登錄平臺",
+              "color": "#ffffff",
+              "align": "start",
+              "size": "xs",
+              "gravity": "center",
+              "margin": "none"
+            }
+          ],
+          "backgroundColor": "#e9c46a",
+          "paddingAll": "20px"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "image",
+                  "url": "https://fatraceschool.k12ea.gov.tw/dish/pic/35829",
+                  "aspectRatio": "2:1",
+                  "aspectMode": "cover"
+                },
+                {
+                  "type": "text",
+                  "text": "胚芽飯",
+                  "color": "#222222",
+                  "size": "sm",
+                  "wrap": true,
+                  "margin": "sm"
+                }
+              ],
+              "alignItems": "center"
+            },
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "image",
+                  "url": "https://fatraceschool.k12ea.gov.tw/dish/pic/1698999353038090",
+                  "aspectRatio": "2:1",
+                  "aspectMode": "cover"
+                },
+                {
+                  "type": "text",
+                  "text": "安東燉雞",
+                  "color": "#222222",
+                  "size": "sm",
+                  "wrap": true,
+                  "margin": "sm"
+                }
+              ],
+              "alignItems": "center"
+            },
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "image",
+                  "url": "https://fatraceschool.k12ea.gov.tw/dish/pic/14724489881937179",
+                  "aspectRatio": "2:1",
+                  "aspectMode": "cover"
+                },
+                {
+                  "type": "text",
+                  "text": "白滷豬腳",
+                  "color": "#222222",
+                  "size": "sm",
+                  "wrap": true,
+                  "margin": "sm"
+                }
+              ],
+              "alignItems": "center"
+            },
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "image",
+                  "url": "https://fatraceschool.k12ea.gov.tw/dish/pic/75633",
+                  "aspectRatio": "2:1",
+                  "aspectMode": "cover"
+                },
+                {
+                  "type": "text",
+                  "text": "塔香海茸",
+                  "color": "#222222",
+                  "size": "sm",
+                  "wrap": true,
+                  "margin": "sm"
+                }
+              ],
+              "alignItems": "center"
+            },
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "image",
+                  "url": "https://fatraceschool.k12ea.gov.tw/dish/pic/1462753939122130",
+                  "aspectRatio": "2:1",
+                  "aspectMode": "cover"
+                },
+                {
+                  "type": "text",
+                  "text": "高麗菜",
+                  "color": "#222222",
+                  "size": "sm",
+                  "wrap": true,
+                  "margin": "sm"
+                }
+              ],
+              "alignItems": "center"
+            },
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "contents": [
+                {
+                  "type": "image",
+                  "url": "https://fatraceschool.k12ea.gov.tw/dish/pic/1649513873038595",
+                  "aspectRatio": "2:1",
+                  "aspectMode": "cover"
+                },
+                {
+                  "type": "text",
+                  "text": "番茄元氣湯",
+                  "color": "#222222",
+                  "size": "sm",
+                  "wrap": true,
+                  "margin": "sm"
+                }
+              ],
+              "alignItems": "center"
+            }
+          ],
+          "paddingAll": "none"
+        },
+        "action": {
+          "type": "uri",
+          "label": "action",
+          "uri": "https://fatraceschool.k12ea.gov.tw/frontend/search.html?school=193313&period=2024-04-09"
+        },
+        "styles": {
+          "body": {
+            "backgroundColor": "#F2F4F3"
+          },
+          "footer": {
+            "separator": false
+          }
+        }
+      },
+      {
+        "type": "bubble",
+        "size": "deca",
+        "header": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "新聞快訊",
+              "color": "#ffffff",
+              "align": "start",
+              "size": "xl",
+              "gravity": "center",
+              "weight": "bold"
+            },
+            {
+              "type": "text",
+              "text": "來自各大新聞平台",
+              "color": "#ffffff",
+              "align": "start",
+              "size": "xs",
+              "gravity": "center",
+              "margin": "none"
+            }
+          ],
+          "backgroundColor": "#f4a261",
+          "paddingAll": "20px"
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "育仁中學畢聯會主席畢業後面臨法律挑戰",
+              "color": "#222222",
+              "size": "md",
+              "wrap": true,
+              "weight": "bold"
+            },
+            {
+              "type": "text",
+              "text": "畢聯會主席在畢業典禮籌備會議中錄音，遭老師以「妨害秘密罪」控告，引發廣泛關注與討論。",
+              "color": "#222222",
+              "size": "xs",
+              "wrap": true
+            },
+            {
+              "type": "text",
+              "text": "新北市議員指出校園電子煙氾濫，教育局授權檢查書包",
+              "color": "#222222",
+              "size": "md",
+              "wrap": true,
+              "weight": "bold"
+            },
+            {
+              "type": "text",
+              "text": "為打擊校園內電子煙問題，教育局可檢查學生書包並沒收違禁品。",
+              "color": "#222222",
+              "size": "sm",
+              "wrap": true
+            }
+          ],
+          "spacing": "md",
+          "paddingAll": "20px"
+        },
+        "styles": {
+          "body": {
+            "backgroundColor": "#F2F4F3"
+          },
+          "footer": {
+            "separator": false
+          }
+        }
+      }
+    ]
+  }

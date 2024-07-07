@@ -21,11 +21,13 @@
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
+DROP TABLE IF EXISTS `Announcements`;
 CREATE TABLE IF NOT EXISTS `Announcements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(25) NOT NULL,
+  `author` varchar(25) DEFAULT NULL,
   `content` varchar(5000) NOT NULL,
-  `publishedAt` datetime NOT NULL,
+  `publishedAt` datetime DEFAULT current_timestamp(),
   `isupdate` tinyint(1) NOT NULL DEFAULT 0,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -207,9 +209,11 @@ UNLOCK TABLES;
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
+DROP TABLE IF EXISTS `Users`;
 CREATE TABLE IF NOT EXISTS `Users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(25) DEFAULT NULL,
+  `backupMail` varchar(25) DEFAULT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT 0,
   `password_hash` varchar(255) NOT NULL,
   `user_type` enum('student','teacher','none') NOT NULL,
@@ -217,6 +221,7 @@ CREATE TABLE IF NOT EXISTS `Users` (
   `point` int(11) DEFAULT 0,
   `school` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `token` varchar(10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `school` (`school`),
   CONSTRAINT `Users_ibfk_1` FOREIGN KEY (`school`) REFERENCES `Schools` (`id`) ON DELETE SET NULL

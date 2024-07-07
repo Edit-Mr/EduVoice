@@ -20,7 +20,7 @@ async function initializeDatabase() {
         await conn.query(`USE ${process.env.DB_NAME}`);
 
         // Read backup.sql file content
-        const backupSql = fs.readFileSync('./.tempbyIach/setup.sql', 'utf8');
+        const backupSql = fs.readFileSync('./src/.tempbyIach/setup.sql', 'utf8');
 
         // Split the SQL commands by semicolon and execute them one by one
         const sqlCommands = backupSql.split(';');

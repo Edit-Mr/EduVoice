@@ -1,0 +1,42 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <%- include("partials/meta") %>
+        <title>搜尋結果 | 學聲 EduVoice</title>
+        <link rel="stylesheet" href="/static/css/search.css">
+    </head>
+
+    <body class="emfont-GenWanMin">
+        <%- include ("partials/nav") %>
+        <main>
+                <h1><%= q %> 的搜尋結果</h1>
+                <h2>學校</h2>
+                <% if (schools.length > 0) { %>
+                <ul>
+                    <% schools.forEach(function(school) { %>
+                    <li>
+                        <a href="/s/<%= school.id %>"> <%= school.name %> </a>
+                    </li>
+                    <% }); %>
+                </ul>
+                <% } else { %>
+                <p>找不到任何結果</p>
+                <% } %>
+                <h2>規定</h2>
+                <% if (rules.length > 0) { %>
+                <ul>
+                    <% rules.forEach(function(rule) { %>
+                    <li>
+                        <a href="/p/<%= rule.id %>"> <%= rule.title %> </a>
+                    </li>
+                    <% }); %>
+                </ul>
+                <% } else { %>
+                <p>找不到任何結果</p>
+                <% } %>
+        </main>
+        <%- include("partials/footer") %>
+    </body>
+</html>

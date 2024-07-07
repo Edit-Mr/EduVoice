@@ -1,0 +1,66 @@
+<!-- @format -->
+
+<nav>
+    <div>
+        <div class="nav-left">
+            <div id="title">
+                <a href="/">學聲 EduVoice</a>
+            </div>
+            <ul>
+                <li><a href="https://eduvoice.emtech.cc">學校</a></li>
+                <li>
+                    <a href="https://eduvoice.emtech.cc/rules">規定</a>
+                </li>
+                <li>
+                    <a href="https://eduvoice.emtech.cc/news">新聞</a>
+                </li>
+                <li>
+                    <a href="https://eduvoice.emtech.cc/#daily">日報</a>
+                </li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <form
+                action="/search"
+                class="search-form search-widget"
+                id="top-nav-search-form"
+                role="search"
+            >
+                <label
+                    id="top-nav-search-label"
+                    for="top-nav-search-input"
+                    class="visually-hidden"
+                    >搜尋</label
+                ><input
+                    aria-activedescendant=""
+                    aria-autocomplete="list"
+                    aria-controls="top-nav-search-menu"
+                    aria-expanded="false"
+                    aria-labelledby="top-nav-search-label"
+                    autocomplete="off"
+                    id="top-nav-search-input"
+                    role="combobox"
+                    type="search"
+                    class="search-input-field"
+                    name="q"
+                    placeholder=""
+                    required=""
+                    value=""
+                /><button
+                    type="button"
+                    class="button action has-icon clear-search-button"
+                    onclick="console.log('cleared');document.getElementById('top-nav-search-input').value = ''; document.getElementById('top-nav-search-input').focus();"
+                ></button
+                ><button
+                    type="submit"
+                    class="button action has-icon search-button"
+                ></button>
+            </form>
+            <a
+                class="login"
+                href='https://eduvoice.emtech.cc/oauth'
+            >登入</a
+            >
+        </div>
+    </div>
+</nav>

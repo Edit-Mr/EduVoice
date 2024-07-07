@@ -1,0 +1,31 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <%- include("partials/meta") %>
+        <title>學校 | 學聲 EduVoice</title>
+        <link rel="stylesheet" href="/static/css/search.css" />
+    </head>
+
+    <body class="emfont-GenWanMin">
+        <%- include ("partials/nav") %>
+        <main>
+            <h1>校園列表</h1>
+            <% all.forEach(function(city) { %>
+            <h2><%= city[0].city %></h2>
+            <% if (city.length > 0) { %>
+            <ul>
+                <% city.forEach(function(school) { %>
+                <li>
+                    <a href="/s/<%= school.id %>"> <%= school.name %> </a>
+                </li>
+                <% }); %>
+            </ul>
+            <% } else { %>
+            <p>找不到任何結果</p>
+            <% } %> <% }); %>
+        </main>
+        <%- include("partials/footer") %>
+    </body>
+</html>

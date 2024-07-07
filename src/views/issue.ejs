@@ -1,0 +1,258 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <%- include("partials/meta") %>
+        <title>取消早自習 | 學聲 EduVoice</title>
+        <style>
+            main {
+                padding-top: 5rem;
+                transition: all 0.5s;
+            }
+            .intro-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+            .intro {
+                flex-grow: 1;
+            }
+            .box {
+                background-color: #fff;
+                border-radius: 1rem;
+                padding: 24px;
+                flex-grow: 1;
+            }
+            .pie-chart {
+                flex: 0 0;
+                display: flex;
+                flex-direction: column;
+                white-space: nowrap;
+            }
+            .pie-box {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-grow: 1;
+                min-width: 14rem;
+                gap: 2rem;
+            }
+            .pie {
+                width: 10rem;
+                height: 10rem;
+                border-radius: 50%;
+                background: conic-gradient(
+                    #f00 0% 30%,
+                    #ff0 30% 60%,
+                    #0f0 60% 100%
+                );
+            }
+            .reporting main {
+                filter: blur(5px) brightness(0.5) grayscale(1);
+            }
+
+            .report {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                max-width: 600px;
+                width: 100%;
+                background: #fff;
+                color: #000;
+                transform: translate(-50%, -50%);
+                opacity: 0;
+            }
+            .reporting .report {
+                opacity: 1;
+            }
+            .pie-square {
+                display: inline-block;
+                width: 1rem;
+                height: 1rem;
+                margin-right: 0.5rem;
+            }
+
+            .green {
+                background-color: #0f0;
+            }
+            .yellow {
+                background-color: #ff0;
+            }
+            .red {
+                background-color: #f00;
+            }
+            .tag {
+                background-color: rgb(217, 217, 217);
+                color: #fff;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                border-radius: 6rem;
+                margin-left: 0.5rem;
+            }
+            .rule{
+                background-color: red;
+            }
+            section {
+                padding-block: 1rem;
+            }
+            h1 + p {
+                margin-bottom: 0;
+            }
+            .confirm {
+                background-color: #fffde3;
+                position: relative;
+            }
+            .confirm h2 {
+                margin-bottom: 1rem;
+            }
+            .confirm button {
+                background-color: #0060df;
+                color: #fff;
+                outline: transparent;
+                border: none;
+                border-radius: 0.375rem;
+                padding: 1rem;
+                font-size: 16px;
+                font-weight: 700;
+                margin-top: 1.25rem;
+                cursor: pointer;
+                display: inline-block;
+                margin-right: 1rem;
+            }
+            button:hover {
+                background-color: #0053c0;
+            }
+            button:active {
+                background-color: #0048a7;
+            }
+            .success {
+                position: absolute;
+                top: 0;
+                left: 0;
+                opacity: 0;
+            }
+            .ask,
+            .success {
+                transition: all 0.5s;
+            }
+
+            .success.reported {
+                opacity: 1;
+            }
+            .ask.reported {
+                opacity: 0;
+            }
+            .school-status {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .school-status > div {
+                flex: 1;
+            }
+            .school-status h2 {
+                text-align: center;
+            }
+            .school-status span {
+                text-align: right;
+            }
+        </style>
+    </head>
+
+    <body class="aemfont-GenWanMin">
+        <%- include ("partials/nav") %>
+        <main>
+            <section>
+                <h1>
+                    <!-- <%= Rules.title %> -->
+                    <span class="tag">法規</span><span class="tag rule">法規</span>
+                </h1>
+                <p>50 間學校資料，200 次通報</p>
+            </section>
+            <section class="intro-container">
+                <div class="intro box">
+                    <h2>議題簡介</h2>
+                    <!-- <p><%= Rules.title %></p> -->
+                </div>
+                <div class="pie-chart box">
+                    <h2>全台達成比例</h2>
+                    <div class="pie-box">
+                        <div class="pie"></div>
+                        <div>
+                            <div class="green pie-square"></div>
+                            已實施: 30% <br />
+                            <div class="yellow pie-square"></div>
+                            實驗階段: 20% <br />
+                            <div class="red pie-square"></div>
+                            未實施: 50%
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="box confirm">
+                    <div class="ask">
+                        <h2>
+                            <!-- <%= issueStatus %> -->
+                            目前<%= issueStatus %>此政策?</h2>
+                        <p>目前資料: 正在實施 | 不確定度: 30%</p>
+                        <button
+                            onclick="document.body.classList.add('reported')"
+                        >
+                            沒錯</button
+                        ><button
+                            onclick="document.body.classList.add('reporting')"
+                        >
+                            資訊有誤
+                        </button>
+                    </div>
+                    <div class="success">
+                        <h2>感謝您的回報</h2>
+                        <p>，我們會盡快更新資料</p>
+                    </div>
+                </div>
+            </section>
+            <section class="school-status">
+                <div>
+                    <h2>已實施</h2>
+                    <a href="">市立西苑高中 <span>✅</span></a
+                    ><a href="">市立西苑高中 <span>✅</span></a
+                    ><a href="">市立西苑高中 <span>✅</span></a>
+                </div>
+                <div>
+                    <h2>實驗階段</h2>
+                    <a href="">市立西苑高中 <span>🟡</span></a
+                    ><a href="">市立西苑高中 <span>🟡</span></a
+                    ><a href="">市立西苑高中 <span>🟡</span></a>
+                </div>
+                <div>
+                    <h2>未實施</h2>
+                    <a href="">市立西苑高中</a><a href="">市立西苑高中</a
+                    ><a href="">市立西苑高中</a>
+                </div>
+            </section>
+        </main>
+
+        <div class="report">
+            <h2>回報現況</h2>
+            <form>
+                <input type="text" name="" id="" />
+                <button
+                    onclick="document.body.classList.remove('reporting');document.body.classList.add('reported')"
+                >
+                    未實施</button
+                ><button
+                    onclick="document.body.classList.remove('reporting');document.body.classList.add('reported')"
+                >
+                    實驗階段</button
+                ><button
+                    onclick="document.body.classList.remove('reporting');document.body.classList.add('reported')"
+                >
+                    已實施
+                </button>
+            </form>
+        </div>
+
+        <%- include("partials/footer") %>
+    </body>
+</html>

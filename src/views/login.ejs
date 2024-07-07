@@ -1,0 +1,44 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <%- include("partials/meta") %>
+      <title>登入 | 學聲 EduVoice</title>
+        <meta property="og:url" content="https://eduvoice.emtech.cc/login" />
+        <link rel="stylesheet" href="/static/css/login.css" />
+    </head>
+
+    <body class="emfont-GenWanMin">
+        <%- include("partials/nav") %>
+        <header></header>
+        <main>
+            <h1>請輸入密碼</h1>
+            <p class="error"><%= message %></p>
+            <form action="/login" method="post">
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="aaa"
+                    required
+                    style="display: none"
+                />
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="請輸入密碼"
+                    required
+                />
+                <button
+                    onclick="document.querySelector('main').classList.add('slide')"
+                    type="submit"
+                >
+                    登入
+                </button>
+            </form>
+        </main>
+        <%- include("partials/footer") %>
+    </body>
+</html>

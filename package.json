@@ -7,10 +7,11 @@
     "author": "Elvis Mao <info@elvismao.com>",
     "license": "Apache-2.0",
     "scripts": {
-        "start": "node app.js",
-        "dev": "nodemon app.js"
+        "start": "node src/app.js",
+        "dev": "nodemon src/app.js"
     },
     "dependencies": {
+        "ejs": "^3.1.10",
         "express": "^4.19.2",
         "mariadb": "^3.3.1",
         "nodemon": "^3.1.4",

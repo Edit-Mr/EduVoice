@@ -12,7 +12,6 @@ const pool = mariadb.createPool({
 async function login(email, passwordHash) {
     let conn;
     try {
-        console.log(email, passwordHash)
         conn = await pool.getConnection();
         const query = `
         SELECT * FROM Users WHERE email = ? AND password_hash = ?
@@ -23,7 +22,6 @@ async function login(email, passwordHash) {
 
         console.log("User login:", rows);
         if (rows.length > 0) {
-            console.log("User login successful:", rows[0]);
             return rows[0]; // Return user details if needed
         } else {
             console.log("User login failed: Invalid email or password");

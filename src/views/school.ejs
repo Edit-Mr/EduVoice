@@ -1,0 +1,144 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <%- include("partials/meta") %>
+        <title><%= schoolName %> | 學聲 EduVoice</title>
+        <style>
+            main {
+                padding-top: 5rem;
+                transition: all 0.5s;
+            }
+            .intro-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+            .intro {
+                flex-grow: 1;
+            }
+            .box {
+                background-color: #fff;
+                border-radius: 1rem;
+                padding: 24px;
+                flex-grow: 1;
+            }
+            .pie-chart {
+                flex: 0 0;
+                display: flex;
+                flex-direction: column;
+                white-space: nowrap;
+            }
+            .pie-box {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-grow: 1;
+                min-width: 14rem;
+                gap: 2rem;
+            }
+            .pie {
+                width: 10rem;
+                height: 10rem;
+                border-radius: 50%;
+                background: conic-gradient(
+                    #f00 0% 20%,
+                    rgb(163, 163, 163) 20% 30%,
+                    #ff0 30% 60%,
+                    #0f0 60% 100%
+                );
+            }
+        </style>
+    </head>
+
+    <body class="aemfont-GenWanMin">
+        <%- include ("partials/nav") %> header{ padding: 1rem; text-align:
+        center; }
+        <main>
+            <section>
+                <h1>西苑高中</h1>
+                <p>台中市</p>
+            </section>
+            <section class="intro-container">
+                <div class="intro box">
+                    <h2>議題簡介</h2>
+                    <p>B</p>
+                </div>
+                <div class="pie-chart box">
+                    <h2>遵守法規</h2>
+                    <div class="pie-box">
+                        <div class="pie"></div>
+                        <div>
+                            <div class="green pie-square"></div>
+                            已實施: 30% <br />
+                            <div class="yellow pie-square"></div>
+                            實驗階段: 10% <br />
+                            <div class="red pie-square"></div>
+                            未實施: 50%<br />
+                            <div class="red pie-square"></div>
+                            未知: 10%
+                        </div>
+                    </div>
+                </div>
+                <div class="pie-chart box">
+                    <h2>所有政策</h2>
+                    <div class="pie-box">
+                        <div class="pie"></div>
+                        <div>
+                            <div class="green pie-square"></div>
+                            已實施: 30% <br />
+                            <div class="yellow pie-square"></div>
+                            實驗階段: 10% <br />
+                            <div class="red pie-square"></div>
+                            未實施: 50%<br />
+                            <div class="red pie-square"></div>
+                            未知: 10%
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="school-status">
+                <div>
+                    <h2>已實施</h2>
+                    <a href="">市立西苑高中 <span>✅</span></a
+                    ><a href="">市立西苑高中 <span>✅</span></a
+                    ><a href="">市立西苑高中 <span>✅</span></a>
+                </div>
+                <div>
+                    <h2>實驗階段</h2>
+                    <a href="">市立西苑高中 <span>🟡</span></a
+                    ><a href="">市立西苑高中 <span>🟡</span></a
+                    ><a href="">市立西苑高中 <span>🟡</span></a>
+                </div>
+                <div>
+                    <h2>未實施</h2>
+                    <a href="">市立西苑高中</a><a href="">市立西苑高中</a
+                    ><a href="">市立西苑高中</a>
+                </div>
+            </section>
+        </main>
+
+        <div class="report">
+            <h2>回報現況</h2>
+            <form>
+                <input type="text" name="" id="" />
+                <button
+                    onclick="document.body.classList.remove('reporting');document.body.classList.add('reported')"
+                >
+                    未實施</button
+                ><button
+                    onclick="document.body.classList.remove('reporting');document.body.classList.add('reported')"
+                >
+                    實驗階段</button
+                ><button
+                    onclick="document.body.classList.remove('reporting');document.body.classList.add('reported')"
+                >
+                    已實施
+                </button>
+            </form>
+        </div>
+
+        <%- include("partials/footer") %>
+    </body>
+</html>

@@ -1,0 +1,438 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <%- include("./partials/meta") %>
+        <title>學聲 EduVoice</title>
+        <meta property="og:url" content="https://eduvoice.emtech.cc" />
+        <style>
+            header {
+                position: relative;
+                padding: 8rem 2.5rem 4rem;
+                line-height: 1.2;
+                margin-bottom: 2rem;
+            }
+            #issue {
+                text-align: center;
+            }
+
+            #issues {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+                margin-top: 2rem;
+            }
+
+            #issues > a {
+                line-height: 1.25;
+                background: #d5f1f1;
+                color: #000;
+                text-decoration: none;
+                padding: 0 1.5rem;
+                height: 2em;
+                display: inline-flex;
+                border-radius: 1.5em;
+                justify-content: center;
+                align-items: center;
+            }
+            #news {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1.5rem;
+            }
+
+            #news article {
+                background-color: #fff;
+                border-radius: 1rem;
+                width: 303px;
+                padding: 24px;
+                display: flex;
+                flex-grow: 1;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            #news .category {
+                font-size: 0.75em;
+                line-height: 1.3333733333;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+                color: #6e6e73;
+            }
+
+            #news h3 {
+                font-size: 1.1875;
+                font-weight: 700;
+                letter-spacing: 0.012em;
+            }
+
+            #news .date {
+                margin-top: 0.5rem;
+                font-size: 0.875rem;
+                font-weight: 600;
+                color: #6e6e73;
+                letter-spacing: 0.012em;
+            }
+
+            .daily {
+                background-color: #ffffff;
+                min-height: 600px;
+                padding: 70px;
+                padding-bottom: 0;
+                box-shadow: 4px 12px 40px 6px rgba(0, 0, 0, 0.01);
+                border-radius: 1.875rem;
+                position: relative;
+                display: flex;
+                gap: 2rem;
+            }
+
+            .fadeShine {
+                animation: fadeShine 5s infinite;
+            }
+
+            @keyframes fadeShine {
+                0% {
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 1;
+                }
+                60% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
+            .daily > div {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .daily .small {
+                font-size: 0.875rem;
+                font-weight: 600;
+                color: #6e6e73;
+                letter-spacing: 0.012em;
+                margin-bottom: 1rem;
+            }
+
+            .daily::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 1;
+                border-radius: inherit;
+                -webkit-box-shadow: 4px 12px 40px 6px rgba(0, 0, 0, 0.09);
+                box-shadow: 4px 12px 40px 6px rgba(0, 0, 0, 0.09);
+            }
+
+            #register {
+                padding: 5rem 0;
+                position: relative;
+                text-align: center;
+                font-size: 3rem;
+                max-width: unset;
+            }
+
+            .registerGradient {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                z-index: -1;
+                background: url(/static/img/footer_gradient__d5jtmfwmiqqa_medium.jpg)
+                    no-repeat center center;
+                background-size: cover;
+                width: 100%;
+                height: calc(100% + 300px);
+                min-height: 100lvh;
+            }
+
+            .registerMask {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                z-index: -1;
+                background: linear-gradient(#f5f5f7, transparent);
+                width: 100%;
+                height: calc(100% + 300px);
+                min-height: 100lvh;
+            }
+
+            #register h2 {
+                font-size: 3rem;
+                margin-bottom: 0;
+            }
+
+            #register a {
+                background: #fbfbfd;
+                color: #000;
+                cursor: pointer;
+                display: inline-block;
+                text-align: center;
+                white-space: nowrap;
+                font-size: 17px;
+                line-height: 1.17648;
+                font-weight: 400;
+                letter-spacing: -0.022em;
+                min-width: 30px;
+                padding: 7px 15px;
+                border-radius: 980px;
+                --sk-button-margin-horizontal: 14px;
+                --sk-button-margin-vertical: 14px;
+            }
+
+            .login {
+                background-color: #000;
+                color: #fff;
+            }
+
+            #register a:hover {
+                text-decoration: none;
+            }
+
+            #home-header::before {
+                content: "";
+                display: block;
+                position: absolute;
+                z-index: 1;
+                left: 0px;
+                bottom: 0px;
+                width: 100%;
+                height: 100%;
+                background: -webkit-radial-gradient(
+                        50% 100%,
+                        circle,
+                        #d1f0bc 25%,
+                        rgba(209, 240, 188, 0) 55%
+                    ),
+                    -webkit-radial-gradient(at bottom left, #faf9fd 10%, rgba(
+                                    250,
+                                    249,
+                                    253,
+                                    0
+                                )
+                                30%),
+                    -webkit-radial-gradient(at bottom right, #fbfefa 25%, rgba(
+                                    251,
+                                    254,
+                                    250,
+                                    0
+                                )
+                                40%);
+                background: radial-gradient(
+                        circle at 50% 100%,
+                        #d1f0bc 25%,
+                        rgba(209, 240, 188, 0) 55%
+                    ),
+                    radial-gradient(
+                        at bottom left,
+                        #faf9fd 10%,
+                        rgba(250, 249, 253, 0) 30%
+                    ),
+                    radial-gradient(
+                        at bottom right,
+                        #fbfefa 25%,
+                        rgba(251, 254, 250, 0) 40%
+                    );
+            }
+
+            #home-header > div {
+                max-width: 40rem;
+                margin: auto;
+                position: relative;
+                z-index: 2;
+            }
+
+            #home-header {
+                background: linear-gradient(
+                    90deg,
+                    #e9bcf2 7%,
+                    #f8b7c5,
+                    #fec49a,
+                    #ffd493,
+                    #ffedbe 80%,
+                    #fff7e0
+                );
+            }
+
+            .aos.ed {
+                transform: translateY(0rem);
+                opacity: 1;
+            }
+            .aos {
+                transform: translateY(1rem);
+                opacity: 0;
+                transition: transform 1.2s ease-out, opacity 1.2s ease-out;
+            }
+            .phone {
+                position: relative;
+            }
+            .phone img {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+                object-position: top;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 1;
+            }
+        </style>
+    </head>
+
+    <body class="emfont-GenWanMin">
+        <%- include("./partials/nav") %>
+        <header id="home-header">
+            <div>
+                <h1 class="aos">
+                    最真實的校園資訊<br />
+                    來自學生
+                </h1>
+                <p>
+                    <span class="emfont-Cubic11">高清無碼，</span
+                    ><span class="emfont-GenYoGothic">由社群回報校園資訊</span>
+                </p>
+                <form action="/search" role="search">
+                    <input
+                        type="search"
+                        name="q"
+                        id="searchbox-header"
+                        placeholder="搜尋學校或政策"
+                    />
+                </form>
+            </div>
+        </header>
+        <main>
+            <section id="issue">
+                <h2>大家都在關注</h2>
+                <div id="issues" class="emfont-GenYoGothic">
+                    <a href="/i/營養午餐" class="service">營養午餐</a>
+                    <a href="/i/監視器" class="service">監視器</a>
+                    <a href="/i/八點上學" class="rule">八點上學</a>
+                </div>
+            </section>
+            <section>
+                <h2>最新新聞</h2>
+                <div id="news">
+                    <article class="aos" onclick="location.href='https://www.instagram.com/taiwanyouth/p/C86_HBwSKiQ/'">
+                        <div>
+                            <div class="category emfont-GenYoGothic">
+                                校園新聞
+                            </div>
+                            <h3>教育部公布高中身心調適假正路上路</h3>
+                        </div>
+                        <div class="date">2024 年 7 月 3 日</div>
+                    </article>
+                    <article class="aos" onclick="location.href='https://www.instagram.com/taiwanyouth/p/C7eS5tSSR6R/'">
+                        <div>
+                            <div class="category emfont-GenYoGothic">
+                                校園新聞|學生自治
+                            </div>
+                            <h3>虎尾高中舉辦模擬公投</h3>
+                        </div>
+                        <div class="date">2024 年 6 月 12 日</div>
+                    </article>
+                    <article class="aos" onclick="location.href='/news/1'">
+                        <div>
+                            <div class="category emfont-GenYoGothic">
+                                SITCON 2024 舉辦中
+                            </div>
+                            <h3>SITCON 2024 舉辦中</h3>
+                        </div>
+                        <div class="date">2024 年 6 月 19 日</div>
+                    </article>
+                </div>
+            </section>
+            <section id="daily">
+                <div class="daily">
+                    <div class="aos phone">
+                        <img src="/static/img/image2.PNG" alt="" />
+                        <img
+                            class="fadeShine"
+                            src="/static/img/image.PNG"
+                            alt=""
+                        />
+                    </div>
+                    <div class="aos">
+                        <div class="small">為你專屬打造的</div>
+                        <h2>學聲日報</h2>
+                        <p class="emfont-GenYoGothic">
+                            每天早上七點，幫你統整前一天最新的校園資訊。<br />從網路新聞到營養午餐，讓你第一時間掌握校園發生的事情。
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <section id="register">
+                <div class="registerGradient"></div>
+                <div class="aos">
+                    <h2>立即加入<br />讓問題被看見</h2>
+                    <a
+                        href="https://eduvoice.emtech.cc/oauth"
+                        class="emfont-GenYoGothic"
+                        >登入</a
+                    >
+                </div>
+                <div class="registerMask"></div>
+            </section>
+            <%- include("./partials/footer") %>
+        </main>
+        <script>
+            //scroll event
+            window.addEventListener("scroll", function () {
+                const registerGradient =
+                    document.querySelector(".registerGradient");
+                const registerMask = document.querySelector(".registerMask");
+                const offset =
+                    (registerGradient.getBoundingClientRect().top /
+                        window.innerHeight) *
+                    3;
+                console.log(offset);
+                if (offset > 1) {
+                    registerGradient.style.opacity = 0;
+                    registerMask.style.background =
+                        "linear-gradient(#f5f5f7, transparent)";
+                } else if (offset < 0) {
+                    registerGradient.style.opacity = 1;
+                    registerMask.style.background = "transparent";
+                }
+                {
+                    registerGradient.style.opacity = 1 - offset;
+                    registerMask.style.background = `linear-gradient(#f5f5f7, transparent ${
+                        offset * 100
+                    }%)`;
+                }
+            });
+
+            //aos
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return rect.bottom < 0 || rect.top > window.innerHeight;
+            }
+
+            function addClassToVisibleElements() {
+                var Elements = document.querySelectorAll(".aos");
+                Elements.forEach(function (fadeInElement) {
+                    if (!isElementInViewport(fadeInElement))
+                        fadeInElement.classList.add("ed");
+                    else fadeInElement.classList.remove("ed");
+                });
+            }
+
+            document.addEventListener("scroll", addClassToVisibleElements);
+            addClassToVisibleElements();
+        </script>
+    </body>
+</html>

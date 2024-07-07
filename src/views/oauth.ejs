@@ -1,0 +1,36 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <%- include("partials/meta") %>
+        <title>登入 | 學聲 EduVoice</title>
+        <meta property="og:url" content="https://eduvoice.emtech.cc" />
+        <link rel="stylesheet" href="/static/css/login.css" />
+    </head>
+
+    <body class="emfont-GenWanMin">
+        <%- include("partials/nav") %>
+        <header></header>
+        <main>
+            <h1>請輸入您的電子郵件地址</h1>
+            <p>校園或個人電子郵件皆可</p>
+            <form action="/oauth" method="post">
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="請輸入您的電子郵件地址"
+                    required
+                />
+                <button
+                    type="submit"
+                    onclick="document.querySelector('main').classList.add('slide')"
+                >
+                註冊或登入
+                </button>
+            </form>
+        </main>
+        <%- include("partials/footer") %>
+    </body>
+</html>

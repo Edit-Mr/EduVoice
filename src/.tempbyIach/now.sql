@@ -25,8 +25,9 @@ DROP TABLE IF EXISTS `Announcements`;
 CREATE TABLE `Announcements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(25) NOT NULL,
+  `author` varchar(25) DEFAULT NULL,
   `content` varchar(5000) NOT NULL,
-  `publishedAt` datetime NOT NULL,
+  `publishedAt` datetime DEFAULT current_timestamp(),
   `isupdate` tinyint(1) NOT NULL DEFAULT 0,
   `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -107,7 +108,7 @@ CREATE TABLE `Rule_History` (
   `rule` int(11) DEFAULT NULL,
   `school` int(11) DEFAULT NULL,
   `change_description` text NOT NULL,
-  `changed_date` datetime NOT NULL,
+  `timeStamp` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `rule` (`rule`),
   KEY `school` (`school`),
@@ -216,7 +217,8 @@ DROP TABLE IF EXISTS `Users`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(25) DEFAULT NULL,
+  `backupMail` varchar(25) DEFAULT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT 0,
   `password_hash` varchar(255) NOT NULL,
   `user_type` enum('student','teacher','none') NOT NULL,
@@ -224,6 +226,7 @@ CREATE TABLE `Users` (
   `point` int(11) DEFAULT 0,
   `school` int(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `token` varchar(10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `school` (`school`),
   CONSTRAINT `Users_ibfk_1` FOREIGN KEY (`school`) REFERENCES `Schools` (`id`) ON DELETE SET NULL
@@ -248,4 +251,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-06  6:45:56
+-- Dump completed on 2024-07-06 14:47:39

@@ -207,14 +207,22 @@ const { getone } = require("./package/getAttr.js"); // Assuming this function is
 
 app.get("/s/:school/", async (req, res) => {
   schoolId = req.params.school;
+  //schoolData.[sql欄位名稱]可以取得該校的資料
   schoolData = await query(
     "SELECT * FROM Schools WHERE id = ?",
     [schoolId],
     true
   );
-  //schoolData.[sql欄位名稱]可以取得該校的資料
-  
+  //ruleRule是該校的所有規定(含狀態)
+  const ruleData = await query(
+    "SELECT Rules.id, Rules.title, LEFT(Rules.content,10) as content, \
+    Rules.is_mandatory,Rule_History.change_description, Rule_History.timeStamp, Rule_History.status \
+    FROM Rules JOIN Rule_History ON Rules.id = Rule_History.rule WHERE Rule_History.school = ?;",
+    [schoolId]
+  );
+  console.log("schoolData:", schoolData);
   return res.render("school", {
+    ruleData,
     schoolData,
     loginStatus: false,
   });

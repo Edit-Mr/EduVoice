@@ -4,7 +4,7 @@
 <html lang="zh-Hant">
     <head>
         <%- include("partials/meta") %>
-        <title><%= schoolName %> | 學聲 EduVoice</title>
+        <title><%= schoolData.name %> | 學聲 EduVoice</title>
         <style>
             main {
                 padding-top: 5rem;
@@ -87,14 +87,14 @@
         <%- include ("partials/nav") %>
         <main>
             <section>
-                <h1>西苑高中</h1>
-                <p>台中市</p>
+                <h1><%= schoolData.name %></h1>
+                <p><%= schoolData.location %></p>
             </section>
             <section class="intro-container">
                 <div class="intro box">
                     <h2>校園簡介</h2>
                     <p>
-                        臺中市立西苑高級中學，簡稱西苑高中，為位於臺灣臺中市西屯區逢甲商圈附近的一所市立完全中學，創校於1970年。設有國中部、高中部及國中補校。
+                        <%= schoolData.intro %>
                     </p>
                 </div>
                 <div class="pie-chart box">

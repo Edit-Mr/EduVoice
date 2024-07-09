@@ -7,7 +7,7 @@ const { newAnnouncement } = require("./newsCreate.js"); //新增公告
 const { newUser } = require("./regester"); //新增用戶
 const { query } = require("./sqlSearch.js");
 //要插入被 forigkey 關聯的表格
-
+const pool = require("./package/sqlconn.js");
 const app = express();
 const CHANNEL_ACCESS_TOKEN = process.env.CHANNEL_ACCESS_TOKEN;
 const CHANNEL_SECRET = process.env.CHANNEL_SECRET;
@@ -208,24 +208,39 @@ const { getone } = require("./package/getAttr.js"); // Assuming this function is
 app.get("/s/:school/", async (req, res) => {
   schoolId = req.params.school;
   //schoolData.[sql欄位名稱]可以取得該校的資料
-  schoolData = await query(
-    "SELECT * FROM Schools WHERE id = ?",
-    [schoolId],
-    true
-  );
-  //ruleRule是該校的所有規定(含狀態)
-  const ruleData = await query(
-    "SELECT Rules.id, Rules.title, LEFT(Rules.content,10) as content, \
-    Rules.is_mandatory,Rule_History.change_description, Rule_History.timeStamp, Rule_History.status \
-    FROM Rules JOIN Rule_History ON Rules.id = Rule_History.rule WHERE Rule_History.school = ?;",
-    [schoolId]
-  );
-  console.log("schoolData:", schoolData);
-  return res.render("school", {
-    ruleData,
-    schoolData,
-    loginStatus: false,
-  });
+  try {
+    schoolData = await query(
+      "SELECT * FROM Schools WHERE id = ?",
+      [schoolId],
+      true
+    );
+    if (!schoolData) {
+      return res.status(404).render("signupResult", {
+        result: "找不到學校",
+        message: "找不到這間學校",
+        loginStatus: false,
+      });
+    }
+    //ruleRule是該校的所有規定(含該校規定狀態、規定細目)
+    const ruleData = await query(
+      "SELECT Rules.id, Rules.title, LEFT(Rules.content,10) as content, \
+      Rules.is_mandatory,Rule_History.change_description, Rule_History.timeStamp, Rule_History.status \
+      FROM Rules JOIN Rule_History ON Rules.id = Rule_History.rule WHERE Rule_History.school = ?;",
+      [schoolId]
+    );
+    return res.render("school", {
+      ruleData,
+      schoolData,
+      loginStatus: false,
+    });
+  } catch (error) {
+    console.error("Error in /s/:school/ route:", error);
+    return res.status(500).render("signupResult", {
+      result: "喔哦",
+      message: "伺服器似乎出現了點問題...",
+      loginStatus: false,
+    });
+  }
 });
 
 app.get("/rules", async (req, res) => {

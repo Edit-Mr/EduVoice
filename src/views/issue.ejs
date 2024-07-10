@@ -189,7 +189,7 @@
         <main>
             <section>
                 <h1>
-                    取消早自修<span class="tag">校規</span
+                    <%= ruleDetail.title %> <span class="tag">校規</span
                     ><span class="tag rule">法規</span>
                 </h1>
                 <p>50 間學校資料，200 次通報</p>
@@ -198,7 +198,7 @@
                 <div class="intro box">
                     <h2>議題簡介</h2>
                     <p>
-                        台灣教育部於2024年宣布取消早自修，引發社會各界爭議。支持者認為此舉可減輕學生壓力，讓學生有更多休息時間；反對者則擔心學生學習時間不足，影響升學競爭力。此外，部分家長和學校擔心取消早自修會增加學校和家庭的管理負擔，需重新調整課程和生活安排。這項決定在教育界和家長群體中引發熱烈討論，反映出台灣教育改革過程中的挑戰和分歧。
+                        <%=ruleDetail.content%>
                     </p>
                 </div>
                 <div class="pie-chart box">
@@ -240,6 +240,10 @@
             <section class="school-status">
                 <div>
                     <h2>已實施</h2>
+                        <% ruleStatus.forEach(rule => { %>
+                                <%if (rule.status == "O") { %>
+                                    <a href=""><%= rule.school_name %> <span>✅</span></a>
+                        <% }}); %>
                     <a href="">市立某某高中 <span>✅</span></a
                     ><a href="">市立某某高中 <span>✅</span></a
                     ><a href="">市立某某高中 <span>✅</span></a>
@@ -252,6 +256,10 @@
                 </div>
                 <div>
                     <h2>未實施</h2>
+                    <% ruleStatus.forEach(rule => { %>
+                        <%if (rule.status == "X") { %>
+                            <a href=""><%= rule.school_name %> <span>❌</span></a>
+                <% }}); %>
                     <a href="">市立某某高中 <span>❌</span></a><a href="">市立某某高中 <span>❌</span></a
                     ><a href="">市立某某高中 <span>❌</span></a>
                 </div>

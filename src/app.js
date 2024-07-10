@@ -258,18 +258,19 @@ app.get("/i/:ruleId", async (req, res) => {
     const ruleStatus = await foucusIssue(ruleId);
     console.log("igewopghw[eoj[o]]:", ruleDetail);
     console.log("all:", ruleStatus);
-    // if (result.length == 0) {
-    //   return res.render("issue", {
-    //     status: "未登錄",
-    //     ruleId,
-    //     entries: [],
-    //   });
-    // }
+    console.log(ruleDetail.length,ruleStatus.length)
+    if ((ruleDetail.length==0 || ruleStatus.length==0)) {
+      return res.status(404).render("signupResult", {
+        result: "喔哦",
+        message: "找不到這個規定",
+        loginStatus: false,
+      });
+    }
 
     return res.render("issue", {
-      status: "已登錄",
       ruleDetail,
-      ruleStatus
+      ruleStatus,
+      loginStatus: false
     });
   } catch (error) {
     console.error("Error in /i/:ruleId route:", error);

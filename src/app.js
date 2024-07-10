@@ -248,59 +248,28 @@ app.get("/rules", async (req, res) => {
     loginStatus: false,
   });
 });
-const { statusIssue } = require("./issueStatus.js"); // Assuming this function is properly defined
-app.get("/s/:school/:issue", async (req, res) => {
-  try {
-    const schoolId = req.params.school;
-    const issueId = req.params.issue;
-    const schoolData = await getone("Schools", "id", schoolId);
-    const Rules = await getone("Rules", "id", issueId);
-    const issueStatus = await statusIssue(schoolId, issueId);
-    if (issueStatus) {
-      console.log("issueStatus:", issueStatus);
-      return res.render("issue", {
-        Rules,
-        schoolData,
-        schoolId,
-        issueId,
-        issueStatus,
-        loginStatus: false,
-      });
-    } else {
-      return res.status(404).render("signupResult", {
-        result: "找不到狀態",
-        message: "找不到該校的該議題狀態",
-        loginStatus: false,
-      });
-    }
-  } catch (error) {
-    console.error("Error in /t/:school/:issue route:", error);
-    return res.status(500).render("signupResult", {
-      result: "喔哦",
-      message: "伺服器似乎出現了點問題...",
-      loginStatus: false,
-    });
-  }
-});
-const { issueDisplay } = require("./issueDisplay.js");
+
+
+const { getRuleById,foucusIssue } = require("./issue.js");
 app.get("/i/:ruleId", async (req, res) => {
   const ruleId = req.params.ruleId;
   try {
-    const result = await issueDisplay(ruleId);
-
-    if (result.length == 0) {
-      return res.render("issue", {
-        status: "未登錄",
-        ruleId,
-        entries: [],
-      });
-    }
-    console.log("ruleId:", result);
+    const ruleDetail = await getRuleById(ruleId);
+    const ruleStatus = await foucusIssue(ruleId);
+    console.log("igewopghw[eoj[o]]:", ruleDetail);
+    console.log("all:", ruleStatus);
+    // if (result.length == 0) {
+    //   return res.render("issue", {
+    //     status: "未登錄",
+    //     ruleId,
+    //     entries: [],
+    //   });
+    // }
 
     return res.render("issue", {
       status: "已登錄",
-      ruleId,
-      entries: result,
+      ruleDetail,
+      ruleStatus
     });
   } catch (error) {
     console.error("Error in /i/:ruleId route:", error);

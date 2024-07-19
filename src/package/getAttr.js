@@ -1,13 +1,4 @@
-require("dotenv").config();
-const mariadb = require("mariadb");
-
-const pool = mariadb.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  connectionLimit: 5,
-});
+const pool = require("./sqlconn.js");
 
 async function getone(table, properties, value) {
   try {
@@ -21,7 +12,9 @@ async function getone(table, properties, value) {
     if (rows.length > 0) {
       return rows[0]; // Return user details if needed
     } else {
-      console.log(`not found property or value in table:${properties} ${value} form ${table}`);
+      console.log(
+        `not found property or value in table:${properties} ${value} form ${table}`
+      );
       return null;
     }
   } catch (err) {

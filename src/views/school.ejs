@@ -136,7 +136,6 @@
                     <% if (ruleData && ruleData.length > 0) { %>
                         
                         <% ruleData.forEach(rule => { %>
-                                <% console.log(rule) %>
                                 <%if (rule.status == "O") { %>
                                     <a href=""><%= rule.title %> <span>✅</span></a>
                             <% }}); %>
@@ -149,8 +148,8 @@
                     <% if (ruleData && ruleData.length > 0) { %>
                         
                         <% ruleData.forEach(rule => { %>
-                                <% console.log(rule) %>
                                 <%if (rule.status == "?") { %>
+                                    <a onclick="alert('更新紀錄\n❌2023.1.1 糾察隊門口登記 (學生)\n🟡 2024.1.1 登記不懲處 (老師)')">穿便服上學 <span>🟡</span></a>
                                     <a href=""><%= rule.title %> <span>🟡</span></a>
                             <% }}); %>
                     <% } else { %>
@@ -162,10 +161,8 @@
                     <% if (ruleData && ruleData.length > 0) { %>
                         
                         <% ruleData.forEach(rule => { %>
-                                <% console.log(rule) %>
                                 <%if (rule.status == "X") { %>
                                     <a href=""><%= rule.title %> <span>❌</span></a>
-                                    <a onclick="alert('更新紀錄\n❌2023.1.1 糾察隊門口登記 (學生)\n🟡 2024.1.1 登記不懲處 (老師)')">穿便服上學 <span>🟡</span></a
                             <% }}); %>
                     <% } else { %>
                         <p>目前沒有資料</p>

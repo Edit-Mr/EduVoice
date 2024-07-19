@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-
+const pool = require("./package/sqlconn.js");
 async function fetchSchoolData() {
     const jsonFilePath = path.resolve(__dirname, 'school.json'); // Assuming school.json is in the same directory as this script
 

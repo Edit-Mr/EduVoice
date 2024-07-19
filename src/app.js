@@ -249,17 +249,22 @@ app.get("/rules", async (req, res) => {
   });
 });
 
-
-const { getRuleById,foucusIssue } = require("./issue.js");
+const { getRuleById, foucusIssue, informTime } = require("./issue.js");
 app.get("/i/:ruleId", async (req, res) => {
   const ruleId = req.params.ruleId;
   try {
+    //取得某規定的詳細資料
     const ruleDetail = await getRuleById(ruleId);
+    //取得某議題所有學校最新回報
     const ruleStatus = await foucusIssue(ruleId);
-    console.log("igewopghw[eoj[o]]:", ruleDetail);
-    console.log("all:", ruleStatus);
-    console.log(ruleDetail.length,ruleStatus.length)
-    if ((ruleDetail.length==0 || ruleStatus.length==0)) {
+    //關於這個規定的所有回報次數
+    const totalinfo = await informTime(ruleId);
+    
+    // console.log("totalinfo:", totalinfo);
+    // console.log("ruleDetail:", ruleDetail);
+    // console.log("ruleStatus", ruleStatus);
+    
+    if (!ruleDetail || ruleStatus.length == 0) {
       return res.status(404).render("signupResult", {
         result: "喔哦",
         message: "找不到這個規定",
@@ -270,7 +275,8 @@ app.get("/i/:ruleId", async (req, res) => {
     return res.render("issue", {
       ruleDetail,
       ruleStatus,
-      loginStatus: false
+      totalinfo,
+      loginStatus: false,
     });
   } catch (error) {
     console.error("Error in /i/:ruleId route:", error);

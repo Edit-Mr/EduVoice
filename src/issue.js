@@ -32,6 +32,23 @@ WHERE rh.rule = ?;`,
     return [];
   }
 }
+async function informTime(ruleId) {
+  try {
+    const Result = await query(
+      "SELECT COUNT(*) as icount FROM Rule_History WHERE rule = ?;",
+      [ruleId],
+      true
+    );
+    if (Result) {
+      return Number(Result.icount);
+    } else {
+      return 0;
+    }
+  } catch (err) {
+    console.error("Error informTime():", err);
+    return 0;
+  }
+}
 async function getRuleById(ruleId) {
   try {
     const result = await query(
@@ -49,4 +66,4 @@ async function getRuleById(ruleId) {
     return null;
   }
 }
-module.exports = { getRuleById,foucusIssue };
+module.exports = { getRuleById, foucusIssue, informTime };

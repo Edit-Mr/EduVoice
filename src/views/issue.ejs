@@ -192,7 +192,7 @@
                     <%= ruleDetail.title %> <span class="tag">校規</span
                     ><span class="tag rule">法規</span>
                 </h1>
-                <p>50 間學校資料，200 次通報</p>
+                <p><%= ruleStatus.length %> 間學校資料，<%= totalinfo %> 次通報</p>
             </section>
             <section class="intro-container">
                 <div class="intro box">
@@ -242,26 +242,22 @@
                     <h2>已實施</h2>
                         <% ruleStatus.forEach(rule => { %>
                                 <%if (rule.status == "O") { %>
-                                    <a href=""><%= rule.school_name %> <span>✅</span></a>
-                        <% }}); %>
-                    <a href="">市立某某高中 <span>✅</span></a
-                    ><a href="">市立某某高中 <span>✅</span></a
-                    ><a href="">市立某某高中 <span>✅</span></a>
+                                    <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>✅</span></a>
+                        <% }}); %>  
                 </div>
                 <div>
                     <h2>實驗階段</h2>
-                    <a href="">市立某某高中 <span>🟡</span></a
-                    ><a href="">市立某某高中 <span>🟡</span></a
-                    ><a href="">市立某某高中 <span>🟡</span></a>
+                    <% ruleStatus.forEach(rule => { %>
+                        <%if (rule.status == "?") { %>
+                            <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>✅</span></a>
+                <% }}); %>
                 </div>
                 <div>
                     <h2>未實施</h2>
                     <% ruleStatus.forEach(rule => { %>
                         <%if (rule.status == "X") { %>
-                            <a href=""><%= rule.school_name %> <span>❌</span></a>
+                            <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>❌</span></a>
                 <% }}); %>
-                    <a href="">市立某某高中 <span>❌</span></a><a href="">市立某某高中 <span>❌</span></a
-                    ><a href="">市立某某高中 <span>❌</span></a>
                 </div>
             </section>
         </main>

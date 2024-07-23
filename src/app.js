@@ -2,6 +2,7 @@
 const request = require("request");
 const express = require("express");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 const { initializeDatabase } = require("./database"); //創建表格
 const { newAnnouncement } = require("./newsCreate.js"); //新增公告
 const { newUser } = require("./regester"); //新增用戶
@@ -14,7 +15,7 @@ const CHANNEL_SECRET = process.env.CHANNEL_SECRET;
 const port = process.env.PORT || 3333;
 app.use("/static", express.static(path.join(__dirname, "static")));
 app.use(express.json());
-
+app.use(cookieParser());
 // Set the view engine to EJS in folder ./views
 app.set("view engine", "ejs");
 app.set("views", "./src/views/");
@@ -105,7 +106,8 @@ app.get("/getinfo", async (req, res) => {
 
 //登出
 app.get("/logout", (req, res) => {
-  res.clearCookie("auth_token");
+  const userInfoCookie = req.cookies.userInfo;
+  res.clearCookie("userInfo");
   res.redirect("/");
 });
 const { deleteUser } = require("./userDelete.js"); //刪除用戶
@@ -140,12 +142,22 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post("/oauth", async (req, res) => {
   const { email } = req.body;
-  // warring:亂打 mail 畫面會變全白
-  return res.render("register", {
-    loginStatus: false,
-    email,
-    message: "",
-  });
+  //撈一下資料，看看要跳登入頁面或是註冊頁面
+  vip = await query("SELECT * FROM Users WHERE email = ?", [email], true);
+  console.log("註冊還是登入？", vip);
+  if (vip) {
+    return res.render("login", {
+      loginStatus: false,
+      email,
+      message: "",
+    });
+  } else {
+    return res.render("register", {
+      loginStatus: false,
+      email,
+      message: "",
+    });
+  }
 });
 
 // 註冊
@@ -162,10 +174,8 @@ app.post("/register", async (req, res) => {
       message: "有空格未完成填寫",
     });
   }
-  console.log("填寫完成");
   //檢查帳號是否已經存在
   query("SELECT * FROM Users WHERE email = ?", [email], true).then((rows) => {
-    console.log("rows:", rows);
     //undefined 表示和資料庫已存在帳號不重複
     if (rows) {
       return res.status(400).render("register", {
@@ -190,9 +200,21 @@ app.post("/register", async (req, res) => {
       });
     }
 
-    createdFlag = await newUser(email, password, schoolId, randomString(5),schoolEmail);
+    createdFlag = await newUser(
+      email,
+      password,
+      schoolId,
+      randomString(5),
+      schoolEmail
+    );
     if (createdFlag) {
       console.log("註冊成功");
+      res.cookie("userInfo", JSON.stringify({ email, school, name }), {
+        httpOnly: true, // 防止 JavaScript 讀取
+        secure: true, // 只有在 HTTPS 上傳送
+        maxAge: 24 * 60 * 60 * 1000, // 有效期 1 天
+        path: "/", // 設置 cookie 的路徑
+      });
       return res.render("signupResult", {
         result: "註冊成功",
         message: "請至電子郵件點擊確認信來寄送電子郵件。",

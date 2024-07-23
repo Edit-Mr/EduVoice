@@ -16,7 +16,7 @@
             <h1>建立新帳號</h1>
             <p>有朋自遠方來，不亦樂乎?</p>
             <p class="error"><%= message %></p>
-            <form action="/register" method="post">
+            <form action="/register" method="post" id="registerForm">
                 <label for="email">個人電子郵件地址</label>
                 <input
                     type="text"
@@ -52,8 +52,8 @@
                 <label for="password">確認密碼</label>
                 <input
                     type="password"
-                    id="password"
-                    name="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
                     placeholder="請再次輸入您的密碼"
                     required
                 />
@@ -66,43 +66,35 @@
                     <option value="Edge"></option>
                     <option value="Opera"></option>
                 </datalist>
-
-                <button>註冊</button>
+                <button type="submit">註冊</button>
+                <p class="error" id="error-msg"></p>
             </form>
         </main>
         <%- include("partials/footer") %>
         <script>
-            // check if password match
-            document.querySelector("form").addEventListener("submit", e => {
-                const password = document.querySelector("#password").value;
-                const confirmPassword =
-                    document.querySelector("#confirmPassword").value;
-                var problem = "";
+                    document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("registerForm");
+            form.addEventListener("submit", function(e) {
+                const password = document.getElementById("password").value;
+                const confirmPassword = document.getElementById("confirmPassword").value;
+                let problem = "";
+
                 if (password !== confirmPassword) {
                     problem = "密碼不一致";
                 }
-                const schoolEmail =
-                    document.querySelector("#schoolEmail").value;
-                if (
-                    schoolEmail != "" &&
-                    !schoolEmail.split("@")[1].includes("edu")
-                ) {
-                    problem +=
-                        "校園電子郵件地址必須是學校的電子郵件 (若你認為這是錯誤，請聯絡我們)";
+
+                const schoolEmail = document.getElementById("schoolEmail").value;
+                if (schoolEmail !== "" && !schoolEmail.includes("edu")) {
+                    problem += "\n校園電子郵件地址必須是學校的電子郵件 (若你認為這是錯誤，請聯絡我們)";
                 }
+
                 if (problem !== "") {
-                    alert(problem);
+                    e.preventDefault();
+                    document.querySelector("#error-msg").textContent = problem;
                     return;
                 }
-                // send the form
-                document.querySelector("main").classList.add("slide");
-                // create a submit button and click it
-                const submitButton = document.createElement("button");
-                submitButton.type = "submit";
-                submitButton.style.display = "none";
-                document.body.appendChild(submitButton);
-                submitButton.click();
             });
+        });
         </script>
     </body>
 </html>

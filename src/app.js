@@ -156,7 +156,6 @@ app.post("/register", async (req, res) => {
   const { email, schoolEmail, name, password, school } = req.body;
   console.log(email, schoolEmail, name, password, school);
   if (!email || !name || !password || !school) {
-    console.log("bbbbbbbbbbbbbbbbbbbbbt");
     return res.status(400).render("register", {
       loginStatus: false,
       email,
@@ -167,6 +166,7 @@ app.post("/register", async (req, res) => {
   //檢查帳號是否已經存在
   query("SELECT * FROM Users WHERE email = ?", [email], true).then((rows) => {
     console.log("rows:", rows);
+    //undefined 表示和資料庫已存在帳號不重複
     if (rows) {
       return res.status(400).render("register", {
         loginStatus: false,
@@ -176,13 +176,29 @@ app.post("/register", async (req, res) => {
     }
   });
   try {
-    console.log("註冊成功");
-    const user = await newUser(email, password, userType, schoolId);
-    return res.render("signupResult", {
-      result: "註冊成功",
-      email,
-      message: "請至電子郵件點擊確認信來寄送電子郵件。",
-    });
+    schoolId = await query(
+      "SELECT id FROM Schools WHERE name = ?",
+      [school],
+      true
+    );
+    schoolId = schoolId.id;
+    if (!schoolId) {
+      return res.status(400).render("register", {
+        loginStatus: false,
+        email,
+        message: "學校不存在<br>你的學校不在裡面嗎？請聯絡我們。",
+      });
+    }
+
+    createdFlag = await newUser(email, password, schoolId, randomString(5),schoolEmail);
+    if (createdFlag) {
+      console.log("註冊成功");
+      return res.render("signupResult", {
+        result: "註冊成功",
+        message: "請至電子郵件點擊確認信來寄送電子郵件。",
+      });
+    }
+    throw new Error("/register 註冊過程中出現未預期的錯誤");
   } catch (error) {
     console.error("Error in /register route:", error);
     res.status(500).render("signupResult", {
@@ -318,6 +334,7 @@ app.get("/search", async (req, res) => {
 
 //新的議題
 const { newIssue } = require("./issueCreate.js");
+const { create } = require("domain");
 app.post("/newissue", async (req, res) => {
   const { title, tag, description, mandatory } = req.body;
 

@@ -73,7 +73,7 @@ app.post("/login", async (req, res) => {
     });
   }
 });
-const { isExist } = require("./account.js");
+
 const { getUserSchool, getRuleStatus } = require("./getinfo");
 app.get("/getinfo", async (req, res) => {
   //select school form Users where email = ?
@@ -140,6 +140,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post("/oauth", async (req, res) => {
   const { email } = req.body;
+  // warring:亂打 mail 畫面會變全白
   return res.render("register", {
     loginStatus: false,
     email,
@@ -151,30 +152,43 @@ app.post("/oauth", async (req, res) => {
 app.post("/register", async (req, res) => {
   //INSERT INTO Users (email, verified, password_hash, user_type, school,token)VALUES (?, ?, ?, ?, ?,?)
   //新增一個新用戶
-  const { email, pwd, userType, schoolId } = req.body;
-  if (!email || !pwd || !userType || !schoolId) {
+  console.log(req.body);
+  const { email, schoolEmail, name, password, school } = req.body;
+  console.log(email, schoolEmail, name, password, school);
+  if (!email || !name || !password || !school) {
+    console.log("bbbbbbbbbbbbbbbbbbbbbt");
     return res.status(400).render("register", {
       loginStatus: false,
+      email,
       message: "有空格未完成填寫",
     });
   }
+  console.log("填寫完成");
   //檢查帳號是否已經存在
-  if (isExist(email)) {
-    return res.status(400).render("register", {
-      loginStatus: false,
-      message: "信箱已經被註冊過",
-    });
-  }
+  query("SELECT * FROM Users WHERE email = ?", [email], true).then((rows) => {
+    console.log("rows:", rows);
+    if (rows) {
+      return res.status(400).render("register", {
+        loginStatus: false,
+        email,
+        message: "信箱已經被註冊過",
+      });
+    }
+  });
   try {
-    const user = await newUser(email, false, pwd, userType, schoolId);
+    console.log("註冊成功");
+    const user = await newUser(email, password, userType, schoolId);
     return res.render("signupResult", {
       result: "註冊成功",
+      email,
       message: "請至電子郵件點擊確認信來寄送電子郵件。",
     });
   } catch (error) {
-    res.status(500).render("register", {
+    console.error("Error in /register route:", error);
+    res.status(500).render("signupResult", {
       loginStatus: false,
-      message: "伺服器錯誤",
+      result: "哦哦",
+      message: "伺服器似乎出現了點問題...",
     });
   }
 });
@@ -202,8 +216,6 @@ app.post("/newAnnouncement", async (req, res) => {
     });
   }
 });
-
-const { getone } = require("./package/getAttr.js"); // Assuming this function is properly defined
 
 app.get("/s/:school/", async (req, res) => {
   schoolId = req.params.school;
@@ -259,11 +271,11 @@ app.get("/i/:ruleId", async (req, res) => {
     const ruleStatus = await foucusIssue(ruleId);
     //關於這個規定的所有回報次數
     const totalinfo = await informTime(ruleId);
-    
+
     // console.log("totalinfo:", totalinfo);
     // console.log("ruleDetail:", ruleDetail);
     // console.log("ruleStatus", ruleStatus);
-    
+
     if (!ruleDetail || ruleStatus.length == 0) {
       return res.status(404).render("signupResult", {
         result: "喔哦",

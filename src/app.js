@@ -7,6 +7,7 @@ const { initializeDatabase } = require("./database"); //創建表格
 const { newAnnouncement } = require("./newsCreate.js"); //新增公告
 const { newUser } = require("./regester"); //新增用戶
 const { query } = require("./sqlSearch.js");
+const setCookie = require("./package/cookie.js");
 //要插入被 forigkey 關聯的表格
 const pool = require("./package/sqlconn.js");
 const app = express();
@@ -49,7 +50,7 @@ app.post("/login", async (req, res) => {
     });
   }
   try {
-    const user = await login(email, pwd);
+    user=query("SELECT * FROM Users WHERE email = ? and password_hash = ?", [email,pwd], true)
     if (user) {
       // Generate a session token or other identifier
       const token = randomString();
@@ -209,12 +210,7 @@ app.post("/register", async (req, res) => {
     );
     if (createdFlag) {
       console.log("註冊成功");
-      res.cookie("userInfo", JSON.stringify({ email, school, name }), {
-        httpOnly: true, // 防止 JavaScript 讀取
-        secure: true, // 只有在 HTTPS 上傳送
-        maxAge: 24 * 60 * 60 * 1000, // 有效期 1 天
-        path: "/", // 設置 cookie 的路徑
-      });
+      setCookie(res, "userInfo", { email, school, name });
       return res.render("signupResult", {
         result: "註冊成功",
         message: "請至電子郵件點擊確認信來寄送電子郵件。",

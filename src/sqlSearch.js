@@ -9,6 +9,7 @@ async function query(sql, params, onresult = false) {
     if (onresult) return res[0];
     else return res;
   } catch (err) {
+    console.error("Error int query:", err)
     throw err;
   } finally {
     if (conn) conn.end();

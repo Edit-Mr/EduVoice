@@ -24,27 +24,28 @@ const { randomString } = require("./package/randString.js"); //產生隨機字�
 
 app.get("/", (req, res) => {
   // 根據 cookie 有沒有登入資料決定要不要顯示登入按鈕
+  console.log("get-index");
   const loginStatus = req.cookies.userInfo ? true : false;
-  res.render("index", { loginStatus});
+  res.render("index", { loginStatus });
 });
 
-
-
 app.get("/oauth", (req, res) => {
-  loginStatus=req.cookies.userInfo ?true:false;
-  res.render("oauth", { loginStatus});
+  console.log("get-oauth");
+  loginStatus = req.cookies.userInfo ? true : false;
+  res.render("oauth", { loginStatus });
 });
 
 app.get("/login", (req, res) => {
-  loginStatus=req.cookies.userInfo ?true:false;
-  res.render("login", { loginStatus});
+  console.log("get-login");
+  loginStatus = req.cookies.userInfo ? true : false;
+  res.render("login", { loginStatus });
 });
 
 app.post("/login", async (req, res) => {
-  console.log("login:");
+  console.log("post-login:");
   //登入頁，接收使用者輸入的帳號密碼
   const { email, pwd } = req.body;
-
+  console.log("送一個 post");
   if (!email || !pwd) {
     return res.status(400).render("login", {
       loginStatus: false,
@@ -53,15 +54,15 @@ app.post("/login", async (req, res) => {
     });
   }
   try {
-    user=query("SELECT * FROM Users WHERE email = ? and password_hash = ?", [email,pwd], true)
+    const user = query(
+      "SELECT * FROM Users WHERE email = ? and password_hash = ?",
+      [email, pwd],
+      true
+    );
+    console.log(user);
     if (user) {
-      // Generate a session token or other identifier
-      const token = randomString();
-
-      // Set cookie with token
-      res.cookie("auth_token", token, { httpOnly: true, secure: true });
-
       // Redirect back to home page
+      // setCookie(res, "userInfo", { email, name ,schoolId, school});
       res.render("index", { loginStatus: true });
     } else {
       res.status(401).render("login", {
@@ -110,7 +111,6 @@ app.get("/getinfo", async (req, res) => {
 
 //登出
 app.get("/logout", (req, res) => {
-  const userInfoCookie = req.cookies.userInfo;
   res.clearCookie("userInfo");
   res.redirect("/");
 });
@@ -189,12 +189,11 @@ app.post("/register", async (req, res) => {
     }
   });
   try {
-    schoolId = await query(
+    var schoolId = await query(
       "SELECT id FROM Schools WHERE name = ?",
       [school],
       true
     );
-    schoolId = schoolId.id;
     if (!schoolId) {
       return res.status(400).render("register", {
         loginStatus: false,
@@ -202,6 +201,7 @@ app.post("/register", async (req, res) => {
         message: "學校不存在<br>你的學校不在裡面嗎？請聯絡我們。",
       });
     }
+    schoolId = schoolId.id;
 
     createdFlag = await newUser(
       email,
@@ -212,7 +212,7 @@ app.post("/register", async (req, res) => {
     );
     if (createdFlag) {
       console.log("註冊成功");
-      setCookie(res, "userInfo", { email, school, name });
+      setCookie(res, "userInfo", { email, name, schoolId, school });
       return res.render("signupResult", {
         loginStatus: true,
         result: "註冊成功",
@@ -301,6 +301,8 @@ app.get("/rules", async (req, res) => {
 const { getRuleById, foucusIssue, informTime } = require("./issue.js");
 app.get("/i/:ruleId", async (req, res) => {
   const ruleId = req.params.ruleId;
+  loginStatus = req.cookies.userInfo ? true : false;
+  console.log("餅乾好吃", req.cookies.userInfo);
   try {
     //取得某規定的詳細資料
     const ruleDetail = await getRuleById(ruleId);
@@ -317,7 +319,7 @@ app.get("/i/:ruleId", async (req, res) => {
       return res.status(404).render("signupResult", {
         result: "喔哦",
         message: "找不到這個規定",
-        loginStatus: false,
+        loginStatus,
       });
     }
 
@@ -325,14 +327,14 @@ app.get("/i/:ruleId", async (req, res) => {
       ruleDetail,
       ruleStatus,
       totalinfo,
-      loginStatus: false,
+      loginStatus,
     });
   } catch (error) {
     console.error("Error in /i/:ruleId route:", error);
     return res.status(500).render("signupResult", {
       result: "喔哦",
       message: "伺服器似乎出現了點問題...",
-      loginStatus: false,
+      loginStatus,
     });
   }
 });

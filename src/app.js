@@ -20,21 +20,24 @@ app.use(cookieParser());
 // Set the view engine to EJS in folder ./views
 app.set("view engine", "ejs");
 app.set("views", "./src/views/");
-
-app.get("/", (req, res) => {
-  res.render("index", { loginStatus: true });
-});
-
-// 登入
-const { login } = require("./auth");
 const { randomString } = require("./package/randString.js"); //產生隨機字串 token
 
+app.get("/", (req, res) => {
+  // 根據 cookie 有沒有登入資料決定要不要顯示登入按鈕
+  const loginStatus = req.cookies.userInfo ? true : false;
+  res.render("index", { loginStatus});
+});
+
+
+
 app.get("/oauth", (req, res) => {
-  res.render("oauth", { loginStatus: true });
+  loginStatus=req.cookies.userInfo ?true:false;
+  res.render("oauth", { loginStatus});
 });
 
 app.get("/login", (req, res) => {
-  res.render("login", { loginStatus: true });
+  loginStatus=req.cookies.userInfo ?true:false;
+  res.render("login", { loginStatus});
 });
 
 app.post("/login", async (req, res) => {
@@ -145,7 +148,6 @@ app.post("/oauth", async (req, res) => {
   const { email } = req.body;
   //撈一下資料，看看要跳登入頁面或是註冊頁面
   vip = await query("SELECT * FROM Users WHERE email = ?", [email], true);
-  console.log("註冊還是登入？", vip);
   if (vip) {
     return res.render("login", {
       loginStatus: false,
@@ -212,6 +214,7 @@ app.post("/register", async (req, res) => {
       console.log("註冊成功");
       setCookie(res, "userInfo", { email, school, name });
       return res.render("signupResult", {
+        loginStatus: true,
         result: "註冊成功",
         message: "請至電子郵件點擊確認信來寄送電子郵件。",
       });

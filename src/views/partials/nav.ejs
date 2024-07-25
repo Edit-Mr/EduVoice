@@ -56,11 +56,12 @@
                     class="button action has-icon search-button"
                 ></button>
             </form>
-            <a
-                class="login"
-                href='https://eduvoice.emtech.cc/oauth'
-            >登入</a
-            >
+            <% if(loginStatus){ %>
+                <a class="login" href='https://eduvoice.emtech.cc/logout'>登出</a>
+                
+            <% }else { %>
+                <a class="login" href='https://eduvoice.emtech.cc/oauth'>登入</a>
+            <% } %>
         </div>
     </div>
 </nav>

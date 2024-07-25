@@ -13,14 +13,14 @@
         <%- include("partials/nav") %>
         <header></header>
         <main>
-            <h1>請輸入密碼</h1>
+            <h1>請輸入密碼 <%= email %></h1>
             <p class="error"><%= message %></p>
-            <form action="/infoMatch" method="post">
+            <form action="/login" method="post">
                 <input
                     type="email"
                     id="email"
                     name="email"
-                    value="aaa"
+                    value=<%= email %>
                     required
                     style="display: none"
                 />

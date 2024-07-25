@@ -41,12 +41,12 @@ app.get("/login", (req, res) => {
   res.render("login", { loginStatus });
 });
 
-app.post("/infoMatch", async (req, res) => {
+app.post("/login", async (req, res) => {
   console.log("post-login:");
   //登入頁，接收使用者輸入的帳號密碼
-  const { email, pwd } = req.body;
-  console.log("送一個 post");
-  if (!email || !pwd) {
+  const { email, password } = req.body;
+  console.log("送一個 post{", email, password);
+  if (!email || !password) {
     return res.status(400).render("login", {
       loginStatus: false,
       email,
@@ -56,7 +56,7 @@ app.post("/infoMatch", async (req, res) => {
   try {
     const user = query(
       "SELECT * FROM Users WHERE email = ? and password_hash = ?",
-      [email, pwd],
+      [email, password],
       true
     );
     console.log(user);
@@ -145,8 +145,10 @@ app.post("/deleteUser", async (req, res) => {
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/oauth", async (req, res) => {
+  console.log("post-oauth");
   loginStatus = req.cookies.userInfo ? true : false;
   const { email } = req.body;
+  console.log(email);
   //撈一下資料，看看要跳登入頁面或是註冊頁面
   vip = await query("SELECT * FROM Users WHERE email = ?", [email], true);
   if (vip) {

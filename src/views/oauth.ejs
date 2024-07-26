@@ -25,12 +25,29 @@
                 />
                 <button
                     type="submit"
-                    onclick="document.querySelector('main').classList.add('slide')"
                 >
                 註冊或登入
                 </button>
             </form>
         </main>
+        <script>
+            //添加輸入事件監聽器
+            var inputFiled = document.getElementById("email");
+            inputFiled.addEventListener("input", function() {
+                if (inputFiled.value.length > 0) {
+                    //允許按鈕點擊
+                    document.querySelector("button").removeAttribute("disabled");
+                } else {
+                    //禁止按鈕點擊
+                    document.querySelector("button").setAttribute("disabled", "disabled");
+                }
+            });
+
+            const btn=document.querySelector("button");
+            btn.addEventListener("click",function(){
+                document.querySelector('main').classList.add('slide');
+            });
+        </script>
         <%- include("partials/footer") %>
     </body>
 </html>

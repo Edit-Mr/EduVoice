@@ -19,11 +19,10 @@
                 <input
                     type="email"
                     id="email"
+                    value="23@mail"
                     name="email"
-                    value=<%= email %>
                     required
-                    style="display: none"
-                />
+                    style="display: none"/>
                 <input
                     type="password"
                     id="password"
@@ -32,13 +31,26 @@
                     required
                 />
                 <button
-                    onclick="document.querySelector('main').classList.add('slide')"
                     type="submit"
+                    onclick="document.querySelector('main').classList.add('.slide')"
                 >
                     登入
                 </button>
             </form>
         </main>
+        <script>
+            
+            pwdFiled = document.getElementById("password");
+            if (pwdFiled.value.length > 0) {
+                //允許按鈕點擊
+                document.querySelector("button").removeAttribute("disabled");
+            } else {
+                reqMail=document.getElementById("email");
+            console.log(reqMail.value);
+                //禁止按鈕點擊
+                document.querySelector("button").setAttribute("disabled", "disabled");
+            }
+        </script>
         <%- include("partials/footer") %>
     </body>
 </html>

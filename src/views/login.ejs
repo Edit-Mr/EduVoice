@@ -19,8 +19,8 @@
                 <input
                     type="email"
                     id="email"
-                    value="23@mail"
                     name="email"
+                    value="<%= email %>"
                     required
                     style="display: none"/>
                 <input
@@ -32,24 +32,31 @@
                 />
                 <button
                     type="submit"
-                    onclick="document.querySelector('main').classList.add('.slide')"
+                    onclick="if(TransitionsAnime){ document.querySelector('main').classList.add('slide')}"
                 >
                     登入
                 </button>
             </form>
         </main>
         <script>
+            var Filedemail = document.getElementById("email");
+            var Filedepwd = document.getElementById("password");
+            //帳密輸入都要有東西
+            var TransitionsAnime=Filedepwd.value.length > 0 && Filedemail.value.length > 0?true:false;
             
-            pwdFiled = document.getElementById("password");
-            if (pwdFiled.value.length > 0) {
-                //允許按鈕點擊
-                document.querySelector("button").removeAttribute("disabled");
-            } else {
-                reqMail=document.getElementById("email");
-            console.log(reqMail.value);
-                //禁止按鈕點擊
-                document.querySelector("button").setAttribute("disabled", "disabled");
-            }
+            Filedepwd.addEventListener("input", function() {
+                if (Filedepwd.value.length > 0 && Filedemail.value.length > 0) {
+                    //允許按鈕點擊
+                    document.querySelector("button").removeAttribute("disabled");
+                    TransitionsAnime=true;
+                } else {
+                    //禁止按鈕點擊
+                    document.querySelector("button").setAttribute("disabled", "disabled");
+                    TransitionsAnime=false;
+                }
+            });
+            
+            
         </script>
         <%- include("partials/footer") %>
     </body>

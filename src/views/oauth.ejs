@@ -25,6 +25,7 @@
                 />
                 <button
                     type="submit"
+                    onclick="if(TransitionsAnime){ document.querySelector('main').classList.add('slide')}"
                 >
                 註冊或登入
                 </button>
@@ -33,19 +34,17 @@
         <script>
             //添加輸入事件監聽器
             var inputFiled = document.getElementById("email");
+            var TransitionsAnime=inputFiled.value.length > 0?true:false;
             inputFiled.addEventListener("input", function() {
                 if (inputFiled.value.length > 0) {
                     //允許按鈕點擊
                     document.querySelector("button").removeAttribute("disabled");
+                    TransitionsAnime=true;
                 } else {
                     //禁止按鈕點擊
                     document.querySelector("button").setAttribute("disabled", "disabled");
+                    TransitionsAnime=false;
                 }
-            });
-
-            const btn=document.querySelector("button");
-            btn.addEventListener("click",function(){
-                document.querySelector('main').classList.add('slide');
             });
         </script>
         <%- include("partials/footer") %>

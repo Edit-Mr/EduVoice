@@ -42,7 +42,7 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  console.log("post-login:");
+  console.log("post-login:",req.body);
   //登入頁，接收使用者輸入的帳號密碼
   const { email, password } = req.body;
   console.log("送一個 post{", email, password);
@@ -148,7 +148,6 @@ app.post("/oauth", async (req, res) => {
   console.log("post-oauth");
   loginStatus = req.cookies.userInfo ? true : false;
   const { email } = req.body;
-  console.log(email);
   //撈一下資料，看看要跳登入頁面或是註冊頁面
   vip = await query("SELECT * FROM Users WHERE email = ?", [email], true);
   if (vip) {
@@ -171,13 +170,22 @@ app.post("/register", async (req, res) => {
   //INSERT INTO Users (email, verified, password_hash, user_type, school,token)VALUES (?, ?, ?, ?, ?,?)
   //新增一個新用戶
   console.log(req.body);
-  const { email, schoolEmail, name, password, school } = req.body;
+  const { email, schoolEmail, name, password, confirmPassword ,school } = req.body;
   console.log(email, schoolEmail, name, password, school);
   if (!email || !name || !password || !school) {
     return res.status(400).render("register", {
       loginStatus: false,
       email,
       message: "有空格未完成填寫",
+    });
+  }
+  // 後端也會檢查一次密碼是否一致
+  if (password !== confirmPassword) {
+    return res.status(400).render("register", {
+      loginStatus: false,
+      email,
+      name,
+      message: "密碼不一致",
     });
   }
   //檢查帳號是否已經存在

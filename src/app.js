@@ -20,6 +20,8 @@ app.use(cookieParser());
 // Set the view engine to EJS in folder ./views
 app.set("view engine", "ejs");
 app.set("views", "./src/views/");
+// app read traditional <form> data
+app.use(express.urlencoded({ extended: true }));
 const { randomString } = require("./package/randString.js"); //產生隨機字串 token
 
 app.get("/", (req, res) => {
@@ -42,7 +44,7 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-  console.log("post-login:",req.body);
+  console.log("post-login:", req.body);
   //登入頁，接收使用者輸入的帳號密碼
   const { email, password } = req.body;
   console.log("送一個 post{", email, password);
@@ -54,18 +56,20 @@ app.post("/login", async (req, res) => {
     });
   }
   try {
-    const user = query(
+    const  user =await query(
       "SELECT * FROM Users WHERE email = ? and password_hash = ?",
       [email, password],
       true
     );
-    console.log(user);
+    console.log("user:",(user)?true:false);
     if (user) {
       // Redirect back to home page
-      // setCookie(res, "userInfo", { email, name ,schoolId, school});
-      res.render("index", { loginStatus: true });
+      console.log("登入成功");
+      const name=user.name;
+      setCookie(res, "userInfo", { email, name, schoolId, school });
+      return res.render("index", { loginStatus: true });
     } else {
-      res.status(401).render("login", {
+      return res.status(401).render("login", {
         loginStatus: false,
         email,
         message: "帳號或密碼錯誤",
@@ -75,7 +79,7 @@ app.post("/login", async (req, res) => {
     res.status(500).render("login", {
       loginStatus: false,
       email,
-      message: "伺服器錯誤",
+      message: "伺服器錯誤，聯絡管理員，稍後再試",
     });
   }
 });
@@ -141,8 +145,6 @@ app.post("/deleteUser", async (req, res) => {
     });
   }
 });
-// app read traditional <form> data
-app.use(express.urlencoded({ extended: true }));
 
 app.post("/oauth", async (req, res) => {
   console.log("post-oauth");
@@ -154,7 +156,7 @@ app.post("/oauth", async (req, res) => {
     return res.render("login", {
       loginStatus,
       email,
-      message: "",
+      message: "親愛的用戶你好，請輸入密碼",
     });
   } else {
     return res.render("register", {
@@ -170,7 +172,8 @@ app.post("/register", async (req, res) => {
   //INSERT INTO Users (email, verified, password_hash, user_type, school,token)VALUES (?, ?, ?, ?, ?,?)
   //新增一個新用戶
   console.log(req.body);
-  const { email, schoolEmail, name, password, confirmPassword ,school } = req.body;
+  const { email, schoolEmail, name, password, confirmPassword, school } =
+    req.body;
   console.log(email, schoolEmail, name, password, school);
   if (!email || !name || !password || !school) {
     return res.status(400).render("register", {

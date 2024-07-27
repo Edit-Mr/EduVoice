@@ -65,10 +65,22 @@ app.post("/login", async (req, res) => {
     if (user) {
       // Redirect back to home page
       console.log("登入成功");
-      const name=user.name;
-      setCookie(res, "userInfo", { email, name, schoolId, school });
+      const name=user.name,schoolId=user.school,school=await query("SELECT name FROM Schools WHERE id = ?",[schoolId],true).name;
+      try
+      {
+        setCookie(res, "userInfo", { email, name, schoolId, school });
+      }
+      catch (e)
+      {
+        console.log("Error in setCookie", e);
+      }
+      // return res.render("index", { loginStatus: true });//為什麼會去login.ejs?
+      console.log("準備彈跳");
       return res.render("index", { loginStatus: true });
+
+      // return res.redirect("/");
     } else {
+      console.log("登入失敗，重新登入");
       return res.status(401).render("login", {
         loginStatus: false,
         email,

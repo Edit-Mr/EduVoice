@@ -11,8 +11,13 @@ const setCookie = (res,cookieName, data, options = {}) => {
   };
 
   const finalOptions = { ...defaultOptions, ...options };
-
-  res.cookie(cookieName, JSON.stringify(data), finalOptions);
+  try {
+    // 設定 cookie
+    res.cookie(cookieName, JSON.stringify(data), finalOptions);
+  }
+  catch (e) {
+    console.log("Error in setCookie", e);
+  }
 };
 
 module.exports = setCookie;

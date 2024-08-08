@@ -212,6 +212,7 @@ UNLOCK TABLES;
 -- DROP TABLE IF EXISTS `Users`;
 CREATE TABLE IF NOT EXISTS `Users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nickName` varchar(25) NOT NULL,
   `email` varchar(25) DEFAULT NULL,
   `backupMail` varchar(25) DEFAULT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT 0,
@@ -219,11 +220,11 @@ CREATE TABLE IF NOT EXISTS `Users` (
   `user_type` enum('student','teacher','none') NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `point` int(11) DEFAULT 0,
-  `school` int(11) DEFAULT NULL,
+  `school` int(11),
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `token` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `school` (`school`),
+  PRIMARY KEY (`nickName`),
+  KEY `school` (`id`),
   CONSTRAINT `Users_ibfk_1` FOREIGN KEY (`school`) REFERENCES `Schools` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

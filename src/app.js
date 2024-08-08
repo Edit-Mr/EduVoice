@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
   //測試狀態
   if (loginStatus)
   {
-    console.log("已登入");
+    console.log("已登入使用者資訊:");
     const usrInfo=req.cookies.userInfo;
     const decoded = jwt.verify(usrInfo, JWT_SECRET);
     const email = decoded.email;
@@ -85,19 +85,14 @@ app.post("/login", async (req, res) => {
     if (user) {
       // Redirect back to home page
       console.log("登入成功");
-      const name=user.name,schoolId=user.school,school=await query("SELECT name FROM Schools WHERE id = ?",[schoolId],true).name;
+      //被 SQL 查出來 的 Usr 是 JSON ，存取方式是 Usr.SQL欄位名稱
+      const name=user.nickName,schoolId=user.school,school=(await query("SELECT name FROM Schools WHERE id = ?",[schoolId],true)).name;
       console.log("登入值",email,name,schoolId,school);
       console.log("準備發 JWT");
-      const token = jwt.sign({ email, name, schoolId, school }, JWT_SECRET, { expiresIn: '1d' });
+      const cookieInJWT = jwt.sign({ email, name, schoolId, school }, JWT_SECRET, { expiresIn: '1d' });
       try
       {
-        // setCookie(res, "userInfo", { email, name, schoolId, school });
-        res.cookie('userInfo', token, {
-          httpOnly: true, 
-          secure: true,    
-          maxAge: 24 * 60 * 60 * 1000,  // 1 天有效期
-          path: '/',       
-        });
+        setCookie(res, "userInfo", cookieInJWT);
       }
       catch (e)
       {
@@ -117,6 +112,7 @@ app.post("/login", async (req, res) => {
       });
     }
   } catch (error) {
+    console.error("Error in /login route:", error);
     res.status(500).render("login", {
       loginStatus: false,
       email,
@@ -218,7 +214,7 @@ app.post("/register", async (req, res) => {
     }
   });
   try {
-    var schoolId = await query(
+    let schoolId = await query(
       "SELECT id FROM Schools WHERE name = ?",
       [school],
       true
@@ -233,6 +229,7 @@ app.post("/register", async (req, res) => {
     schoolId = schoolId.id;
 
     createdFlag = await newUser(
+      name,
       email,
       password,
       schoolId,
@@ -241,7 +238,8 @@ app.post("/register", async (req, res) => {
     );
     if (createdFlag) {
       console.log("註冊成功");
-      setCookie(res, "userInfo", { email, name, schoolId, school });
+      const cookieInJWT = jwt.sign({ email, name, schoolId, school }, JWT_SECRET, { expiresIn: '1d' });
+      setCookie(res, "userInfo", cookieInJWT);
       return res.render("signupResult", {
         loginStatus: true,
         result: "註冊成功",

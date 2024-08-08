@@ -9,7 +9,8 @@ const { initializeDatabase } = require("./database"); //創建表格
 const { newAnnouncement } = require("./newsCreate.js"); //新增公告
 const { newUser } = require("./regester"); //新增用戶
 const { query } = require("./sqlSearch.js");
-const setCookie = require("./package/cookie.js");
+const {setCookie,decodeJwtToken} = require("./package/cookie.js");
+const { randomString } = require("./package/randString.js"); //產生隨機字串 token
 //要插入被 forigkey 關聯的表格
 const pool = require("./package/sqlconn.js");
 const app = express();
@@ -26,28 +27,40 @@ app.set("view engine", "ejs");
 app.set("views", "./src/views/");
 // app read traditional <form> data
 app.use(express.urlencoded({ extended: true }));
-const { randomString } = require("./package/randString.js"); //產生隨機字串 token
 
-app.get("/", (req, res) => {
+
+function requireAuth(req, res, next) {
+  if(!req.cookies.userInfo)
+  {
+    return res.status(401).json({ message: '請先登入' });
+  }
+  try
+  {
+    // console.log("requireAuth:",userInfo);
+    const decode_userInfo = decodeJwtToken(req.cookies.userInfo);
+    console.log("decode_userInfo:",decode_userInfo);
+    req.userPlantext = decode_userInfo;
+    next();
+  }
+  catch (e)
+  {
+    res.clearCookie("userInfo");
+    return res.status(401).json({ message: '錯誤的登入驗證，請重新登入再試一次' });
+  }
+}
+
+app.get("/", requireAuth,(req, res) => {
   // 根據 cookie 有沒有登入資料決定要不要顯示登入按鈕
-  console.log("get-index");
+  console.log("get-index",req.userPlantext);
   const loginStatus = req.cookies.userInfo ? true : false;
   //測試狀態
-  if (loginStatus)
-  {
-    console.log("已登入使用者資訊:");
-    const usrInfo=req.cookies.userInfo;
-    const decoded = jwt.verify(usrInfo, JWT_SECRET);
-    const email = decoded.email;
-    const name = decoded.name;
-    const schoolId = decoded.schoolId;
-    const school = decoded.school;
-  
-    console.log('Email:', email);
-    console.log('Name:', name);
-    console.log('School ID:', schoolId);
-    console.log('School:', school);
-  }
+  // if (loginStatus)
+  // {
+  //   console.log("已登入使用者資訊:");
+  //   const usrInfo=req.cookies.userInfo;
+  //   const userCookies = decodeJwtToken(usrInfo);
+  //   console.log("userCookies:",userCookies);
+  // }
   res.render("index", { loginStatus });
 });
 

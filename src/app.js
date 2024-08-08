@@ -1,6 +1,8 @@
 /** @format */
 const request = require("request");
 const express = require("express");
+const jwt = require('jsonwebtoken');
+// const expressJwt = require('express-jwt');
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const { initializeDatabase } = require("./database"); //創建表格
@@ -14,6 +16,8 @@ const app = express();
 const CHANNEL_ACCESS_TOKEN = process.env.CHANNEL_ACCESS_TOKEN;
 const CHANNEL_SECRET = process.env.CHANNEL_SECRET;
 const port = process.env.PORT || 3333;
+const JWT_SECRET = process.env.JWT_SECRET;
+// app.use(expressJwt({ secret: JWT_SECRET, algorithms: ['HS256'] }).unless({ path: ['/login'] }));
 app.use("/static", express.static(path.join(__dirname, "static")));
 app.use(express.json());
 app.use(cookieParser());
@@ -28,6 +32,22 @@ app.get("/", (req, res) => {
   // 根據 cookie 有沒有登入資料決定要不要顯示登入按鈕
   console.log("get-index");
   const loginStatus = req.cookies.userInfo ? true : false;
+  //測試狀態
+  if (loginStatus)
+  {
+    console.log("已登入");
+    const usrInfo=req.cookies.userInfo;
+    const decoded = jwt.verify(usrInfo, JWT_SECRET);
+    const email = decoded.email;
+    const name = decoded.name;
+    const schoolId = decoded.schoolId;
+    const school = decoded.school;
+  
+    console.log('Email:', email);
+    console.log('Name:', name);
+    console.log('School ID:', schoolId);
+    console.log('School:', school);
+  }
   res.render("index", { loginStatus });
 });
 
@@ -66,9 +86,18 @@ app.post("/login", async (req, res) => {
       // Redirect back to home page
       console.log("登入成功");
       const name=user.name,schoolId=user.school,school=await query("SELECT name FROM Schools WHERE id = ?",[schoolId],true).name;
+      console.log("登入值",email,name,schoolId,school);
+      console.log("準備發 JWT");
+      const token = jwt.sign({ email, name, schoolId, school }, JWT_SECRET, { expiresIn: '1d' });
       try
       {
-        setCookie(res, "userInfo", { email, name, schoolId, school });
+        // setCookie(res, "userInfo", { email, name, schoolId, school });
+        res.cookie('userInfo', token, {
+          httpOnly: true, 
+          secure: true,    
+          maxAge: 24 * 60 * 60 * 1000,  // 1 天有效期
+          path: '/',       
+        });
       }
       catch (e)
       {
@@ -130,33 +159,7 @@ app.get("/logout", (req, res) => {
   res.clearCookie("userInfo");
   res.redirect("/");
 });
-const { deleteUser } = require("./userDelete.js"); //刪除用戶
-app.post("/deleteUser", async (req, res) => {
-  const { email, passwordHash } = req.body;
 
-  if (!email || !passwordHash) {
-    return res.status(400).json({ message: "Missing email or password" });
-  }
-
-  try {
-    const result = await deleteUser(email, passwordHash);
-    if (result.success) {
-      return res.json({
-        message: result.message,
-        affectedRows: result.affectedRows,
-      });
-    } else {
-      return res.status(400).json({ message: result.message });
-    }
-  } catch (error) {
-    console.error("Error in /deleteUser route:", error);
-    return res.status(500).render("signupResult", {
-      result: "喔哦",
-      message: "伺服器似乎出現了點問題...",
-      loginStatus: false,
-    });
-  }
-});
 
 app.post("/oauth", async (req, res) => {
   console.log("post-oauth");
@@ -256,29 +259,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-//新增公告
-app.post("/newAnnouncement", async (req, res) => {
-  //新增一個新公告
-  const { title, author, content } = req.body;
-  if (!title || !author || !content) {
-    return res
-      .status(400)
-      .json({ loginStatus: false, message: "Missing required fields" });
-  }
-  try {
-    const announcement = await newAnnouncement(title, author, content);
-    res.json({
-      message: "Announcement created successfully",
-      announcement,
-    });
-  } catch (error) {
-    return res.status(500).render("signupResult", {
-      result: "喔哦",
-      message: "伺服器似乎出現了點問題...",
-      loginStatus: false,
-    });
-  }
-});
+
 
 app.get("/s/:school/", async (req, res) => {
   schoolId = req.params.school;
@@ -381,30 +362,7 @@ app.get("/search", async (req, res) => {
   });
 });
 
-//新的議題
-const { newIssue } = require("./issueCreate.js");
-const { create } = require("domain");
-app.post("/newissue", async (req, res) => {
-  const { title, tag, description, mandatory } = req.body;
 
-  if (!title || !tag || !description || mandatory === undefined) {
-    return res
-      .status(400)
-      .json({ message: "Missing title, tag, description, or mandatory" });
-  }
-
-  try {
-    await newIssue(title, tag, description, mandatory);
-    return res.status(201).json({ message: "New issue created successfully" });
-  } catch (error) {
-    console.error("Error in /newissue route:", error);
-    return res.status(500).render("signupResult", {
-      result: "喔哦",
-      message: "伺服器似乎出現了點問題...",
-      loginStatus: false,
-    });
-  }
-});
 
 app.post("/line-webhook", (req, res) => {
   // Handle messages

@@ -32,55 +32,64 @@ app.use(express.urlencoded({ extended: true }));
 function requireAuth(req, res, next) {
   if(!req.cookies.userInfo)
   {
-    return res.status(401).json({ message: '請先登入' });
+    req.isAuthenticated = false;
   }
   try
   {
     // console.log("requireAuth:",userInfo);
     const decode_userInfo = decodeJwtToken(req.cookies.userInfo);
-    console.log("decode_userInfo:",decode_userInfo);
+    if (decode_userInfo === null)
+    {
+      //解碼失敗，可能是偽造的 cookie (被更改過的 JWT)
+      req.isAuthenticated = false;
+      return next();
+    }
+    console.log("47decode_userInfo:",decode_userInfo);
+    // console.log("decode_userInfo:",decode_userInfo);
+    //加上明碼的使用者方便在後端取值 cookie
     req.userPlantext = decode_userInfo;
-    next();
+    req.isAuthenticated = true;
+    return next();
   }
   catch (e)
   {
-    res.clearCookie("userInfo");
-    return res.status(401).json({ message: '錯誤的登入驗證，請重新登入再試一次' });
+    //解碼失敗，可能是偽造的 cookie (或被更改過的 JWT)
+    req.isAuthenticated = false;
+    return next();
+    // res.clearCookie("userInfo");
   }
 }
-
+function Render(res, viewName, req,httpCode=200, additionalParams = {}) {
+  // 這裡可以根據需求從 req 提取參數，並添加到 context 中
+  const context = {
+      loginStatus:  req.isAuthenticated ? true : false,
+      //其他參數
+      ...additionalParams // 這樣可以傳入更多的參數
+  };
+  // 最後調用 res.render
+  console.log("Render:",viewName,"argv:",context);
+  res.status(httpCode).render(viewName, context);
+}
 app.get("/", requireAuth,(req, res) => {
   // 根據 cookie 有沒有登入資料決定要不要顯示登入按鈕
-  console.log("get-index",req.userPlantext);
-  const loginStatus = req.cookies.userInfo ? true : false;
-  //測試狀態
-  // if (loginStatus)
-  // {
-  //   console.log("已登入使用者資訊:");
-  //   const usrInfo=req.cookies.userInfo;
-  //   const userCookies = decodeJwtToken(usrInfo);
-  //   console.log("userCookies:",userCookies);
-  // }
-  res.render("index", { loginStatus });
+  console.log("get-index by cookie:",req.userPlantext);
+  Render(res, "index", req);
 });
 
-app.get("/oauth", (req, res) => {
+app.get("/oauth",requireAuth, (req, res) => {
   console.log("get-oauth");
-  loginStatus = req.cookies.userInfo ? true : false;
-  res.render("oauth", { loginStatus });
+  Render(res, "oauth", req);
 });
 
-app.get("/login", (req, res) => {
+app.get("/login", requireAuth,(req, res) => {
   console.log("get-login");
-  loginStatus = req.cookies.userInfo ? true : false;
-  res.render("login", { loginStatus });
+  Render(res, "login", req);
 });
 
 app.post("/login", async (req, res) => {
   console.log("post-login:", req.body);
   //登入頁，接收使用者輸入的帳號密碼
   const { email, password } = req.body;
-  console.log("送一個 post{", email, password);
   if (!email || !password) {
     return res.status(400).render("login", {
       loginStatus: false,
@@ -94,13 +103,12 @@ app.post("/login", async (req, res) => {
       [email, password],
       true
     );
-    console.log("user:",(user)?true:false);
     if (user) {
       // Redirect back to home page
       console.log("登入成功");
       //被 SQL 查出來 的 Usr 是 JSON ，存取方式是 Usr.SQL欄位名稱
       const name=user.nickName,schoolId=user.school,school=(await query("SELECT name FROM Schools WHERE id = ?",[schoolId],true)).name;
-      console.log("登入值",email,name,schoolId,school);
+      console.log("歡迎用戶",email,name,schoolId,school);
       console.log("準備發 JWT");
       const cookieInJWT = jwt.sign({ email, name, schoolId, school }, JWT_SECRET, { expiresIn: '1d' });
       try
@@ -180,7 +188,7 @@ app.post("/oauth", async (req, res) => {
     return res.render("login", {
       loginStatus,
       email,
-      message: "親愛的用戶你好，請輸入密碼",
+      message: "",
     });
   } else {
     return res.render("register", {

@@ -6,7 +6,7 @@ async function query(sql, params, onresult = false) {
   try {
     conn = await pool.getConnection();
     const res = await conn.query(sql, params);
-    console.log("res0:", res[0]);
+    console.log("sqlSearch get", res[0]);
     if (onresult) return res[0];
     else return res;
   } catch (err) {

@@ -32,7 +32,7 @@ function decodeJwtToken(token) {
           school: decoded.school
       };
   } catch (err) {
-      console.error('JWT 解密錯誤:', err.message);
+      // console.error('JWT 解密錯誤:', err.message);
       return null; // 如果解密失敗，返回 null
   }
 }

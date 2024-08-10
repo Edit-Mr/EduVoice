@@ -43,27 +43,31 @@ LOCK TABLES `Announcements` WRITE;
 /*!40000 ALTER TABLE `Announcements` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `Category`
---
+CREATE TABLE IF NOT EXISTS `Tags` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)  -- 確保標籤名稱唯一
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE IF NOT EXISTS `Category` (
-  `type` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL,
-  PRIMARY KEY (`type`)
+
+LOCK TABLES `Tags` WRITE;
+insert IGNORE into Tags (name) value("校規");
+insert IGNORE into Tags (name) value("法規");
+UNLOCK TABLES;
+
+
+CREATE TABLE IF NOT EXISTS `Rule_tag` (
+  `rule_id` int(11) NOT NULL,
+  `tag_id` int(11) NOT NULL,
+  PRIMARY KEY (`rule_id`, `tag_id`),
+  FOREIGN KEY (`rule_id`) REFERENCES `Rules` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`tag_id`) REFERENCES `Tags` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `Category`
---
 
-LOCK TABLES `Category` WRITE;
-/*!40000 ALTER TABLE `Category` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Category` ENABLE KEYS */;
-UNLOCK TABLES;
+
 
 --
 -- Table structure for table `Feedback`

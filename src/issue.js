@@ -66,4 +66,21 @@ async function getRuleById(ruleId) {
     return null;
   }
 }
-module.exports = { getRuleById, foucusIssue, informTime };
+async function getRuleTags(ruleId) {
+  try {
+    const result = await query(
+      "SELECT * FROM Rule_tag WHERE rule_id = ?",
+      [ruleId],
+      false
+    );
+    if (result) {
+      return result;
+    } else {
+      return [];
+    }
+  } catch (err) {
+    console.error("Error getRuleTags():", err);
+    return null;
+  }
+}
+module.exports = { getRuleById, foucusIssue, informTime ,getRuleTags};

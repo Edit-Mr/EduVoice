@@ -116,7 +116,6 @@ app.post("/login",requireAuth, async (req, res) => {
       {
         console.log("Error in setCookie", e);
       }
-      // return res.render("index", { loginStatus: true });//為什麼會去login.ejs?
       console.log("準備彈跳");
       return Render(res, "index", req);
     } else {
@@ -163,7 +162,6 @@ app.get("/logout", (req, res) => {
 
 app.post("/oauth", requireAuth,async (req, res) => {
   console.log("post-oauth");
-  loginStatus = req.cookies.userInfo ? true : false;
   const { email } = req.body;
   //撈一下資料，看看要跳登入頁面或是註冊頁面
   vip = await query("SELECT * FROM Users WHERE email = ?", [email], true);
@@ -232,6 +230,7 @@ app.post("/register", requireAuth,async (req, res) => {
 
 app.get("/s/:school/",requireAuth, async (req, res) => {
   schoolId = req.params.school;
+  console.log("schoolId:", schoolId);
   //schoolData.[sql欄位名稱]可以取得該校的資料
   try {
     schoolData = await query(
@@ -249,7 +248,7 @@ app.get("/s/:school/",requireAuth, async (req, res) => {
       FROM Rules JOIN Rule_History ON Rules.id = Rule_History.rule WHERE Rule_History.school = ?;",
       [schoolId]
     );
-    return (res,"school",req,200,{ruleData,schoolData});
+    return Render(res,"school",req,200,{ruleData,schoolData});
   } catch (error) {
     console.error("Error in /s/:school/ route:", error);
     return Render(res,"signupResult",req,500,{result: "喔哦",message: "伺服器似乎出現了點問題..."})
@@ -260,7 +259,7 @@ app.get("/rules", requireAuth,async (req, res) => {
   return Render(res,"issue",req);
 });
 
-const { getRuleById, foucusIssue, informTime } = require("./issue.js");
+const { getRuleById, foucusIssue, informTime,getRuleTags } = require("./issue.js");
 app.get("/i/:ruleId", requireAuth,async (req, res) => {
   const ruleId = req.params.ruleId;
   console.log("餅乾好吃", req.cookies.userInfo);
@@ -275,8 +274,11 @@ app.get("/i/:ruleId", requireAuth,async (req, res) => {
     // console.log("totalinfo:", totalinfo);
     // console.log("ruleDetail:", ruleDetail);
     // console.log("ruleStatus", ruleStatus);
-
-    if (!ruleDetail || ruleStatus.length == 0) {
+    const thisRuleTags = await getRuleTags(ruleId);
+    console.log("thisRuleTags:", thisRuleTags);
+    // [ { rule_id: 57, tag_id: 1 } ]
+    // [ { rule_id: 57, tag_id: 1 }, { rule_id: 57, tag_id: 2 } ]
+    if (!ruleDetail) {
       return Render(res,"signupResult",req,404,{result: "喔哦",message: "找不到這個規定",});
     }
     return Render(res,"issue",req,200,{ruleDetail,ruleStatus,totalinfo});

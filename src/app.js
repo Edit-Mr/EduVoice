@@ -270,18 +270,16 @@ app.get("/i/:ruleId", requireAuth,async (req, res) => {
     const ruleStatus = await foucusIssue(ruleId);
     //關於這個規定的所有回報次數
     const totalinfo = await informTime(ruleId);
-
+    
+    const thisRuleTags = await getRuleTags(ruleId);//[ { name: '校規' }, { name: '法規' } ...]
+    const ruleTags = thisRuleTags.map((tag) => tag.name);//['校規','法規']
     // console.log("totalinfo:", totalinfo);
     // console.log("ruleDetail:", ruleDetail);
     // console.log("ruleStatus", ruleStatus);
-    const thisRuleTags = await getRuleTags(ruleId);
-    console.log("thisRuleTags:", thisRuleTags);
-    // [ { rule_id: 57, tag_id: 1 } ]
-    // [ { rule_id: 57, tag_id: 1 }, { rule_id: 57, tag_id: 2 } ]
     if (!ruleDetail) {
       return Render(res,"signupResult",req,404,{result: "喔哦",message: "找不到這個規定",});
     }
-    return Render(res,"issue",req,200,{ruleDetail,ruleStatus,totalinfo});
+    return Render(res,"issue",req,200,{ruleDetail,ruleStatus,totalinfo,ruleTags});
   } catch (error) {
     console.error("Error in /i/:ruleId route:", error);
     return Render(res,"signupResult",req,500,{result: "喔哦",message: "伺服器似乎出現了點問題...",});

@@ -66,10 +66,27 @@ async function getRuleById(ruleId) {
     return null;
   }
 }
+
 async function getRuleTags(ruleId) {
   try {
+    // Rules 表
+    //     儲存規則的資訊。
+    //     每條記錄有一個唯一的 id。
+
+    // Tags 表
+    //     儲存標籤的資訊，如 "法規"、"校規" 等。
+    //     每條記錄有一個唯一的 id 和對應的 name。
+
+    // Rule_tag 表
+    //     這是一個關聯表，用於表示 Rules 和 Tags 之間的多對多關係。
+    //     包含兩個外鍵：rule_id（指向 Rules.id）和 tag_id（指向 Tags.id）。
+    //找到 Rules 表中 ID 為 ruleId 所對應的所有標籤名稱（Tags.name）
     const result = await query(
-      "SELECT * FROM Rule_tag WHERE rule_id = ?",
+      `SELECT Tags.name FROM Rules
+      JOIN Rule_tag ON Rules.id = Rule_tag.rule_id
+      JOIN Tags ON Rule_tag.tag_id = Tags.id
+      WHERE Rules.id = ?;
+`,
       [ruleId],
       false
     );

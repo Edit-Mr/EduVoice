@@ -308,7 +308,7 @@ app.get("/i/:ruleId", requireAuth, async (req, res) => {
     //取得某規定的詳細資料
     const ruleDetail = await getRuleById(ruleId);
     //取得某議題所有學校最新回報
-    if (!ruleDetail) {
+    if (ruleDetail.length == 0) {
       return Render(res, "signupResult", req, 404, {
         result: "喔哦",
         message: "找不到這個規定",

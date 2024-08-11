@@ -5,29 +5,7 @@
     <head>
         <%- include("partials/meta") %>
         <title><%= ruleDetail.title %> | 學聲 EduVoice</title>
-        <% 
-            // 初始化計數器
-            let countO = 0;//已實施
-            let countQ = 0;//實驗階段
-            let countX = 0;//未實施
-            const totalCount = ruleStatus.length;
 
-            // 統計各種狀態的數量
-            ruleStatus.forEach(rule => {
-                if (rule.status === "O") {
-                    countO++;
-                } else if (rule.status === "?") {
-                    countQ++;
-                } else if (rule.status === "X") {
-                    countX++;
-                }
-            });
-
-            // 計算百分比
-            const percentageO = ((countO / totalCount) * 100).toFixed(0);
-            const percentageQ = ((countQ / totalCount) * 100).toFixed(0);
-            const percentageX = ((countX / totalCount) * 100).toFixed(0);
-        %>
         <style>
             main {
                 padding-top: 5rem;
@@ -65,11 +43,6 @@
                 width: 10rem;
                 height: 10rem;
                 border-radius: 50%;
-                background: conic-gradient(
-                    #f00 0% <%= percentageX %>%,
-                    #ff0 <%= percentageX %>% <%= percentageX + percentageQ %>%,
-                    #0f0 <%= percentageX + percentageQ %>% 100%
-                );
             }
             .reporting main {
                 filter: blur(10px) brightness(0.1) grayscale(.5);
@@ -240,11 +213,11 @@
                         <div class="pie"></div>
                         <div>
                             <div class="green pie-square"></div>
-                            已實施: <%- percentageO %>% <br />
+                            已實施:<br />
                             <div class="yellow pie-square"></div>
-                            實驗階段: <%- percentageQ %>% <br />
+                            實驗階段:<br />
                             <div class="red pie-square"></div>
-                            未實施: <%- percentageX %>%
+                            未實施:
                         </div>
                     </div>
                 </div>
@@ -270,11 +243,15 @@
                     </div>
                 </div>
             </section>
+            <% 
+                let countDone = 0, countNotYet = 0, countTesting = 0;
+            %>
             <section class="school-status">
                 <div>
                     <h2>已實施</h2>
                         <% ruleStatus.forEach(rule => { %>
                                 <%if (rule.status == "O") { %>
+                                    <%countDone++;%>
                                     <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>✅</span></a>
                         <% }}); %>  
                 </div>
@@ -282,6 +259,7 @@
                     <h2>實驗階段</h2>
                     <% ruleStatus.forEach(rule => { %>
                         <%if (rule.status == "?") { %>
+                            <%countTesting++;%>
                             <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>✅</span></a>
                 <% }}); %>
                 </div>
@@ -289,18 +267,27 @@
                     <h2>未實施</h2>
                     <% ruleStatus.forEach(rule => { %>
                         <%if (rule.status == "X") { %>
+                            <%countNotYet++;%>
                             <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>❌</span></a>
                 <% }}); %>
                 </div>
+                <% const totalCount = countDone + countNotYet + countTesting;%>
             </section>
         </main>
         <script>
-            document.getElementsByClassName('pie').style.background = `conic-gradient(
-                    #f00 0% <%= percentageO %> %,
-                    #ff0 10% 20%,
-                    #0f0 20% 100%
+            let pieRed =0;
+            //無視紅線報錯，因為ejs模板語法不被 VSCode 辨認
+            <%
+            const Red=((countNotYet / totalCount) * 100).toFixed(0);
+            const yellow=((countTesting / totalCount) * 100).toFixed(0);
+            const green =((countDone / totalCount) * 100).toFixed(0);
+            %>
+            document.getElementsByClassName('pie')[0].style.background = `conic-gradient(
+                    #f00 0% <%- Red %>%,
+                    #ff0 <%- Red %>% <%- Red+yellow %>%,
+                    #0f0 <%- Red+yellow %>% 100%
                 )`;
-                console.log(document.getElementsByClassName('pie'));
+                console.log(document.getElementsByClassName('pie')[0]);
           </script>
         <div class="report">
             <h2>回報現況</h2>

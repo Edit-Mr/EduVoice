@@ -43,6 +43,7 @@
                 width: 10rem;
                 height: 10rem;
                 border-radius: 50%;
+                /* 下面 Script 會把圓餅的 CSS 切出來，會在分類學校進度的時候把總數數出來，不想要讓時間複雜度是 2n */
             }
             .reporting main {
                 filter: blur(10px) brightness(0.1) grayscale(.5);
@@ -177,6 +178,24 @@
                 text-decoration: none;
                 color: #000;
             }
+            .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f00;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .close-btn:hover {
+            background: #c00;
+        }
         </style>
     </head>
 
@@ -212,12 +231,14 @@
                     <div class="pie-box">
                         <div class="pie"></div>
                         <div>
-                            <div class="green pie-square"></div>
-                            已實施:<br />
+                            <div class="green pie-square" ></div>
+                            <span id="implemented">已實施 :</span>
+                            <br/>
                             <div class="yellow pie-square"></div>
-                            實驗階段:<br />
+                            <span id="Testing">實驗中 :</span>
+                            <br />
                             <div class="red pie-square"></div>
-                            未實施:
+                            <span  id="notYet">未實施 :</span>
                         </div>
                     </div>
                 </div>
@@ -227,15 +248,8 @@
                     <div class="ask">
                         <h2>「正在實施」此政策?</h2>
                         <p>目前資料: 正在實施 | 統一性: 90%</p>
-                        <button
-                            onclick="document.body.classList.add('reported')"
-                        >
-                            沒錯</button
-                        ><button
-                            onclick="document.body.classList.add('reporting')"
-                        >
-                            資訊有誤
-                        </button>
+                        <button onclick="document.body.classList.add('reported')">沒錯</button>
+                        <button onclick="document.body.classList.add('reporting')">資訊有誤</button>
                     </div>
                     <div class="success">
                         <h2>感謝您的回報</h2>
@@ -274,42 +288,50 @@
                 <% const totalCount = countDone + countNotYet + countTesting;%>
             </section>
         </main>
-        <script>
-            let pieRed =0;
-            //無視紅線報錯，因為ejs模板語法不被 VSCode 辨認
-            <%
+        <%
             const Red=((countNotYet / totalCount) * 100).toFixed(0);
             const yellow=((countTesting / totalCount) * 100).toFixed(0);
             const green =((countDone / totalCount) * 100).toFixed(0);
-            %>
-            document.getElementsByClassName('pie')[0].style.background = `conic-gradient(
-                    #f00 0% <%- Red %>%,
-                    #ff0 <%- Red %>% <%- Red+yellow %>%,
-                    #0f0 <%- Red+yellow %>% 100%
-                )`;
-                console.log(document.getElementsByClassName('pie')[0]);
-          </script>
+            const pieFalg = totalCount == 0 ? false : true;//表示是否有資料
+        %>
+        <script>
+            let pieRed =0;
+            //不用管 VSC 的紅色波浪線，這是 EJS 的語法，不是 JS 的語法
+            if(<%= pieFalg %>){
+                document.getElementsByClassName('pie')[0].style.background = `conic-gradient(
+                        #f00 0% <%- Red %>%,
+                        #ff0 <%- Red %>% <%- Red+yellow %>%,
+                        #0f0 <%- Red+yellow %>% 100%
+                    )`;
+                document.getElementById('notYet').innerText += ` <%- Red %>%`;
+                document.getElementById('Testing').innerText += ` <%- yellow %>%`;
+                document.getElementById('implemented').innerText += ` <%- green %>%`;
+            }
+            else
+            {
+                document.getElementsByClassName('pie')[0].style.background = `conic-gradient(
+                        #cfcfcc 0% 100%
+                    )`;
+                document.getElementById('notYet').innerText ="沒有資料"
+                document.getElementById('Testing').innerText="沒有資料"
+                document.getElementById('implemented').innerText ="沒有資料"
+            }
+            function exit(){
+                document.body.classList.remove('reporting');
+                document.body.classList.add('reported')
+            }
+          </script> 
         <div class="report">
             <h2>回報現況</h2>
+            <div class="close-btn" onclick="exit()">X</div>
             <form>
                 <label for="">補充說明 (如登記不懲處)</label>
                 <input type="text" name="" id="" />
-                <button
-                    onclick="document.body.classList.remove('reporting');document.body.classList.add('reported')"
-                >
-                    未實施</button
-                ><button
-                    onclick="document.body.classList.remove('reporting');document.body.classList.add('reported')"
-                >
-                    實驗階段</button
-                ><button
-                    onclick="document.body.classList.remove('reporting');document.body.classList.add('reported')"
-                >
-                    已實施
-                </button>
+                <button onclick="exit()" type="submit" name="status" value="notYet">未實施</button>
+                <button onclick="exit()" type="submit" name="status" value="testing">實驗階段</button>
+                <button onclick="exit()" type="submit" name="status" value="done">已實施</button>
             </form>
         </div>
-
         <%- include("partials/footer") %>
     </body>
 </html>

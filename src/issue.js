@@ -100,4 +100,5 @@ async function getRuleTags(ruleId) {
     return null;
   }
 }
-module.exports = { getRuleById, foucusIssue, informTime ,getRuleTags};
+
+module.exports = { getRuleById, foucusIssue, informTime, getRuleTags };

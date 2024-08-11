@@ -5,6 +5,29 @@
     <head>
         <%- include("partials/meta") %>
         <title><%= ruleDetail.title %> | 學聲 EduVoice</title>
+        <% 
+            // 初始化計數器
+            let countO = 0;//已實施
+            let countQ = 0;//實驗階段
+            let countX = 0;//未實施
+            const totalCount = ruleStatus.length;
+
+            // 統計各種狀態的數量
+            ruleStatus.forEach(rule => {
+                if (rule.status === "O") {
+                    countO++;
+                } else if (rule.status === "?") {
+                    countQ++;
+                } else if (rule.status === "X") {
+                    countX++;
+                }
+            });
+
+            // 計算百分比
+            const percentageO = ((countO / totalCount) * 100).toFixed(0);
+            const percentageQ = ((countQ / totalCount) * 100).toFixed(0);
+            const percentageX = ((countX / totalCount) * 100).toFixed(0);
+        %>
         <style>
             main {
                 padding-top: 5rem;
@@ -43,9 +66,9 @@
                 height: 10rem;
                 border-radius: 50%;
                 background: conic-gradient(
-                    #f00 0% 10%,
-                    #ff0 10% 20%,
-                    #0f0 20% 100%
+                    #f00 0% <%= percentageX %>%,
+                    #ff0 <%= percentageX %>% <%= percentageX + percentageQ %>%,
+                    #0f0 <%= percentageX + percentageQ %>% 100%
                 );
             }
             .reporting main {
@@ -189,8 +212,18 @@
         <main>
             <section>
                 <h1>
-                    <%= ruleDetail.title %> <span class="tag">校規</span
-                    ><span class="tag rule">法規</span>
+                    <%= ruleDetail.title %> 
+
+                    <% if(ruleTags.length == 0){ %>
+                        <span class="tag rule">未分類</span>
+                    <% } %>
+                    <% ruleTags.forEach(tag => { %>
+                        <%if (tag == "法規") { %>
+                            <span class="tag rule">法規</span>
+                        <% }else{ %>
+                            <span class="tag"><%= tag %></span>
+                            <% } %>
+                        <% }); %>  
                 </h1>
                 <p><%= ruleStatus.length %> 間學校資料，<%= totalinfo %> 次通報</p>
             </section>
@@ -207,11 +240,11 @@
                         <div class="pie"></div>
                         <div>
                             <div class="green pie-square"></div>
-                            已實施: 30% <br />
+                            已實施: <%- percentageO %>% <br />
                             <div class="yellow pie-square"></div>
-                            實驗階段: 20% <br />
+                            實驗階段: <%- percentageQ %>% <br />
                             <div class="red pie-square"></div>
-                            未實施: 50%
+                            未實施: <%- percentageX %>%
                         </div>
                     </div>
                 </div>
@@ -261,7 +294,14 @@
                 </div>
             </section>
         </main>
-
+        <script>
+            document.getElementsByClassName('pie').style.background = `conic-gradient(
+                    #f00 0% <%= percentageO %> %,
+                    #ff0 10% 20%,
+                    #0f0 20% 100%
+                )`;
+                console.log(document.getElementsByClassName('pie'));
+          </script>
         <div class="report">
             <h2>回報現況</h2>
             <form>

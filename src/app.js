@@ -258,7 +258,7 @@ app.post("/register", requireAuth, async (req, res) => {
     });
   }
 });
-
+const { getAllRuleStatusInschool } = require("./school.js");
 app.get("/s/:school/", requireAuth, async (req, res) => {
   schoolId = req.params.school;
   console.log("schoolId:", schoolId);
@@ -276,12 +276,9 @@ app.get("/s/:school/", requireAuth, async (req, res) => {
       });
     }
     //ruleRule是該校的所有規定(含該校規定狀態、規定細目)
-    const ruleData = await query(
-      "SELECT Rules.id, Rules.title, LEFT(Rules.content,10) as content, \
-      Rules.is_mandatory,Rule_History.change_description, Rule_History.timeStamp, Rule_History.status \
-      FROM Rules JOIN Rule_History ON Rules.id = Rule_History.rule WHERE Rule_History.school = ?;",
-      [schoolId]
-    );
+    const ruleData = await getAllRuleStatusInschool(schoolId);
+    // 搜尋並判斷狀態演算法 rule 那邊還沒套用
+    console.log("ruleData:", ruleData);
     return Render(res, "school", req, 200, { ruleData, schoolData });
   } catch (error) {
     console.error("Error in /s/:school/ route:", error);
@@ -292,9 +289,9 @@ app.get("/s/:school/", requireAuth, async (req, res) => {
   }
 });
 
-app.get("/rules", requireAuth, async (req, res) => {
-  return Render(res, "issue", req);
-});
+// app.get("/rules", requireAuth, async (req, res) => {
+//   return Render(res, "issue", req);
+// });
 
 const {
   getRuleById,

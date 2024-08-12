@@ -41,12 +41,12 @@
                 width: 10rem;
                 height: 10rem;
                 border-radius: 50%;
-                background: conic-gradient(
+                /* background: conic-gradient(
                     #f00 0% 20%,
                     rgb(163, 163, 163) 20% 30%,
                     #ff0 30% 60%,
                     #0f0 60% 100%
-                );
+                ); */
             }
             .pie.lol {
                 background: conic-gradient(
@@ -100,14 +100,15 @@
                 <div class="pie-chart box">
                     <h2>遵守法規</h2>
                     <div class="pie-box">
+                        <!-- 這一塊派不確定要統計什麼 -->
                         <div class="pie lol"></div>
                         <div>
                             <div class="green pie-square"></div>
-                            已實施: 30% <br />
+                            已實施： 30% <br />
                             <div class="yellow pie-square"></div>
-                            實驗階段: 10% <br />
+                            實驗中： 10% <br />
                             <div class="red pie-square"></div>
-                            未實施: 50%<br />
+                            未實施 ： 50%<br />
                             <div class="red pie-square"></div>
                             未知: 10%
                         </div>
@@ -116,20 +117,23 @@
                 <div class="pie-chart box">
                     <h2>所有政策</h2>
                     <div class="pie-box">
-                        <div class="pie"></div>
+                        <div class="pie" id="allPolicies"></div>
                         <div>
-                            <div class="green pie-square"></div>
-                            已實施: 30% <br />
+                            <div class="green pie-square" ></div>
+                            <span id="implemented">已實施 ：</span>
+                            <br/>
                             <div class="yellow pie-square"></div>
-                            實驗階段: 10% <br />
+                            <span id="Testing">實驗中 ：</span>
+                            <br />
                             <div class="red pie-square"></div>
-                            未實施: 50%<br />
-                            <div class="red pie-square"></div>
-                            未知: 10%
+                            <span  id="notYet">未實施 ：</span>
                         </div>
                     </div>
                 </div>
             </section>
+            <% 
+            let countDone = 0, countNotYet = 0, countTesting = 0;
+            %>
             <section class="school-status">
                 <div>
                     <h2>已實施</h2>
@@ -137,7 +141,8 @@
                         
                         <% ruleData.forEach(rule => { %>
                                 <%if (rule.status == "O") { %>
-                                    <a href=""><%= rule.title %> <span>✅</span></a>
+                                    <%countDone++;%>
+                                    <a href="/i/<%= rule.id %>"><%= rule.title %> <span>✅</span></a>
                             <% }}); %>
                     <% } else { %>
                         <p>目前沒有資料</p>
@@ -149,8 +154,9 @@
                         
                         <% ruleData.forEach(rule => { %>
                                 <%if (rule.status == "?") { %>
-                                    <a onclick="alert('更新紀錄\n❌2023.1.1 糾察隊門口登記 (學生)\n🟡 2024.1.1 登記不懲處 (老師)')">穿便服上學 <span>🟡</span></a>
-                                    <a href=""><%= rule.title %> <span>🟡</span></a>
+                                    <%countTesting++;%>
+                                    <!-- <a onclick="alert('更新紀錄\n❌2023.1.1 糾察隊門口登記 (學生)\n🟡 2024.1.1 登記不懲處 (老師)')">穿便服上學 <span>🟡</span></a> -->
+                                    <a href="/i/<%= rule.id %>"><%= rule.title %> <span>🟡</span></a>
                             <% }}); %>
                     <% } else { %>
                         <p>目前沒有資料</p>
@@ -162,15 +168,47 @@
                         
                         <% ruleData.forEach(rule => { %>
                                 <%if (rule.status == "X") { %>
-                                    <a href=""><%= rule.title %> <span>❌</span></a>
+                                    <%countNotYet++;%>
+                                    <a href="/i/<%= rule.id %>"><%= rule.title %> <span>❌</span></a>
                             <% }}); %>
                     <% } else { %>
                         <p>目前沒有資料</p>
                     <% } %>
                 </div>
+                <% const totalCount = countDone + countNotYet + countTesting;%>
             </section>
         </main>
-
+        <%
+            const Red= ((countNotYet / totalCount) * 100).toFixed(0);
+            const yellow= ((countTesting / totalCount) * 100).toFixed(0);
+            const green = ((countDone / totalCount) * 100).toFixed(0);
+            const pieFalg = totalCount == 0 ? false : true;//表示是否有資料
+        %>
+        <script>
+            let pieRed =0;
+            //不用管 VSC 的紅色波浪線，這是 EJS 的語法，不是 JS 的語法
+            if(<%= pieFalg %>){
+                document.getElementById('allPolicies').style.background = `conic-gradient(
+                        #f00 0% <%- Red %>%,
+                        #ff0 <%- Red %>% <%- Red+yellow %>%,
+                        #0f0 <%- Red+yellow %>% 100%
+                    )`;
+                document.getElementById('notYet').innerText += ` <%- Red %>%`;
+                document.getElementById('Testing').innerText += ` <%- yellow %>%`;
+                document.getElementById('implemented').innerText += ` <%- green %>%`;
+                console.log('red:',<%- Red %>)
+            }
+            else
+            {
+                
+                document.getElementById('allPolicies').style.background = `conic-gradient(
+                        #cfcfcc 0% 100%
+                    )`;
+                document.getElementById('notYet').innerText ="沒有資料"
+                document.getElementById('Testing').innerText="沒有資料"
+                document.getElementById('implemented').innerText ="沒有資料"
+            }
+          </script> 
         <%- include("partials/footer") %>
     </body>
 </html>

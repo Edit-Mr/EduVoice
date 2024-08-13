@@ -12,7 +12,7 @@
         <%- include ("partials/nav") %>
         <main>
             <h1>校園列表</h1>
-            <% all.forEach(function(city) { %>
+            <% if(locals.all) all.forEach(function(city) { %>
             <h2><%= city[0].city %></h2>
             <% if (city.length > 0) { %>
             <ul>

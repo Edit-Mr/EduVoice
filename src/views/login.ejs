@@ -14,7 +14,7 @@
         <header></header>
         <main>
             <h1>請輸入密碼</h1>
-            <p class="error"><%= message %></p>
+            <p class="error"><%= !!locals.message?message:'' %></p>
             <form action="/login" method="post">
                 <input
                     type="email"

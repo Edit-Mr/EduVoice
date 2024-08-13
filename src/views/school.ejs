@@ -4,7 +4,7 @@
 <html lang="zh-Hant">
     <head>
         <%- include("partials/meta") %>
-        <title><%= schoolName %> | 學聲 EduVoice</title>
+        <title><%= !!locals.schoolName?schoolName:'' %> | 學聲 EduVoice</title>
         <style>
             main {
                 padding-top: 5rem;

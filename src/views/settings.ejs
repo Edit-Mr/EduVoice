@@ -1,0 +1,162 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <%- include("partials/meta") %>
+        <title><%= !!locals.schoolName?schoolName:'' %> | 學聲 EduVoice</title>
+        <style>
+            main {
+                padding-top: 5rem;
+                transition: all 0.5s;
+            }
+            .intro-container {
+                display: flex;
+                gap: 2rem;
+            }
+            .intro {
+                flex-grow: 1;
+            }
+            .box {
+                background-color: #fff;
+                border-radius: 1rem;
+                padding: 24px;
+                flex-grow: 1;
+            }
+            .pie-chart {
+                flex: 0 0;
+                display: flex;
+                flex-direction: column;
+                white-space: nowrap;
+            }
+            .pie-box {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-grow: 1;
+                min-width: 14rem;
+                gap: 2rem;
+            }
+            .pie {
+                width: 10rem;
+                height: 10rem;
+                border-radius: 50%;
+                background: conic-gradient(
+                    #f00 0% 20%,
+                    rgb(163, 163, 163) 20% 30%,
+                    #ff0 30% 60%,
+                    #0f0 60% 100%
+                );
+            }
+            .pie.lol {
+                background: conic-gradient(
+                    rgb(163, 163, 163) 0% 10%,
+                    #ff0 10% 30%,
+                    #0f0 30% 100%
+                );
+            }
+
+            .school-status {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+            .school-status > div {
+                flex: 1;
+            }
+            .school-status h2 {
+                text-align: center;
+            }
+            .school-status span {
+                text-align: right;
+            }
+            .school-status a {
+                display: flex;
+                justify-content: space-between;
+                padding: 1rem;
+                border-radius: 0.375rem;
+                background-color: #f0f0f0;
+                margin-bottom: 0.5rem;
+                text-decoration: none;
+                color: #000;
+            }
+        </style>
+    </head>
+
+    <body class="aemfont-GenWanMin">
+        <%- include ("partials/nav") %>
+        <main>
+            <section>
+                <h1>西苑高中</h1>
+                <p>台中市</p>
+            </section>
+            <section class="intro-container">
+                <div class="intro box">
+                    <h2>校園簡介</h2>
+                    <p>
+                        臺中市立西苑高級中學，簡稱西苑高中，為位於臺灣臺中市西屯區逢甲商圈附近的一所市立完全中學，創校於1970年。設有國中部、高中部及國中補校。
+                    </p>
+                </div>
+                <div class="pie-chart box">
+                    <h2>遵守法規</h2>
+                    <div class="pie-box">
+                        <div class="pie lol"></div>
+                        <div>
+                            <div class="green pie-square"></div>
+                            已實施: 30% <br />
+                            <div class="yellow pie-square"></div>
+                            實驗階段: 10% <br />
+                            <div class="red pie-square"></div>
+                            未實施: 50%<br />
+                            <div class="red pie-square"></div>
+                            未知: 10%
+                        </div>
+                    </div>
+                </div>
+                <div class="pie-chart box">
+                    <h2>所有政策</h2>
+                    <div class="pie-box">
+                        <div class="pie"></div>
+                        <div>
+                            <div class="green pie-square"></div>
+                            已實施: 30% <br />
+                            <div class="yellow pie-square"></div>
+                            實驗階段: 10% <br />
+                            <div class="red pie-square"></div>
+                            未實施: 50%<br />
+                            <div class="red pie-square"></div>
+                            未知: 10%
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="school-status">
+                <div>
+                    <h2>已實施</h2>
+                    <a href="">決定是否參加第八節 <span>✅</span></a
+                    ><a href="">穿自己外套 <span>✅</span></a
+                    ><a href="">營養午餐 <span>✅</span></a>
+                    <a href="">圖書館 <span>✅</span></a>
+                    <a href="">福利社 <span>✅</span></a>
+                    <a href="">自主決定晚自習 <span>✅</span></a>
+                    <a href="">電腦借閱 <span>✅</span></a>
+                    <a href="">免費生理用品 <span>✅</span></a>
+                </div>
+                <div>
+                    <h2>實驗階段 / 半開放</h2>
+                    <a onclick="alert('更新紀錄\n❌2023.1.1 糾察隊門口登記 (學生)\n🟡 2024.1.1 登記不懲處 (老師)')">穿便服上學 <span>🟡</span></a
+                    ><a href="">上課使用手機 <span>🟡</span></a
+                    ><a href="">心理假 <span>🟡</span></a>
+                </div>
+                <div>
+                    <h2>未實施</h2>
+                    <a href="">穿拖鞋上學 <span>❌</span></a
+                    ><a href="">校車 <span>❌</span></a
+                    ><a href="">市立某某高中 <span>❌</span></a>
+                </div>
+            </section>
+        </main>
+
+        <%- include("partials/footer") %>
+    </body>
+</html>

@@ -61,9 +61,11 @@
                 transform: translate(-50%, -50%);
                 border-radius: 2rem;
                 opacity: 0;
+                display: none;
             }
             .reporting .report {
                 opacity: 1;
+                display: block;
             }
             .pie-square {
                 display: inline-block;
@@ -274,7 +276,7 @@
                     <% ruleStatus.forEach(rule => { %>
                         <%if (rule.status == "?") { %>
                             <%countTesting++;%>
-                            <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>✅</span></a>
+                            <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>🟡</span></a>
                 <% }}); %>
                 </div>
                 <div>
@@ -324,12 +326,13 @@
         <div class="report">
             <h2>回報現況</h2>
             <div class="close-btn" onclick="exit()">X</div>
-            <form>
+            <form action="/ireport" method="post">
                 <label for="">補充說明 (如登記不懲處)</label>
                 <input type="text" name="" id="" />
                 <button onclick="exit()" type="submit" name="status" value="notYet">未實施</button>
                 <button onclick="exit()" type="submit" name="status" value="testing">實驗階段</button>
                 <button onclick="exit()" type="submit" name="status" value="done">已實施</button>
+                <input type="hidden" name="rulert" value="<%= ruleDetail.id %>"/>
             </form>
         </div>
         <%- include("partials/footer") %>

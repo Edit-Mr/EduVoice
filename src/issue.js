@@ -10,16 +10,38 @@ async function foucusIssue(ruleId) {
   //取得某議題所有學校最新回報
   try {
     const Result = await query(
-      `SELECT rh.*, s.name AS school_name \
-FROM Rule_History rh \
-JOIN ( \
-    SELECT school, MAX(timeStamp) AS latest_timeStamp \
-    FROM Rule_History \
-    WHERE rule = ? \
-    GROUP BY school \
-) subquery ON rh.school = subquery.school AND rh.timeStamp = subquery.latest_timeStamp \
-JOIN Schools s ON rh.school = s.id \
-WHERE rh.rule = ?;`,
+      `SELECT 
+    rh.*, 
+    s.name AS school_name
+FROM 
+    Rule_History rh
+JOIN (
+    SELECT 
+        school, 
+        MAX(UNIX_TIMESTAMP(timeStamp) * 
+            CASE status 
+                WHEN 'O' THEN 3 
+                WHEN '?' THEN 2 
+                WHEN 'X' THEN 1 
+            END) as max_score
+    FROM 
+        Rule_History
+    WHERE 
+        rule = ?
+    GROUP BY 
+        school
+) subquery ON rh.school = subquery.school AND 
+    UNIX_TIMESTAMP(rh.timeStamp) * 
+    CASE rh.status 
+        WHEN 'O' THEN 3 
+        WHEN '?' THEN 2 
+        WHEN 'X' THEN 1 
+    END = subquery.max_score
+JOIN 
+    Schools s ON rh.school = s.id
+WHERE 
+    rh.rule = ?;
+`,
       [ruleId, ruleId]
     );
     if (Result.length > 0) {

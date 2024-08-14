@@ -289,9 +289,15 @@ app.get("/s/:school/", requireAuth, async (req, res) => {
   }
 });
 
-// app.get("/rules", requireAuth, async (req, res) => {
-//   return Render(res, "issue", req);
-// });
+//nowPtr works
+//回報規定狀態，即是往資料庫插入一筆新的資料
+app.post("/ireport", requireAuth, async (req, res) => {
+  if (!req.isAuthenticated)//如果沒有登入
+  {
+    res.redirect('/oauth');
+  }
+  return Render(res, "issue", req);
+});
 
 const {
   getRuleById,

@@ -203,6 +203,14 @@
             .school > div:last-child {
                 margin-bottom: 0;
             }
+
+            .x {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                font-size: 2rem;
+                cursor: pointer;
+            }
         </style>
     </head>
 
@@ -264,24 +272,6 @@
                     <h2>已實施</h2>
                     <div class="school">
                         <div class="school-name">
-                            市立某某高中 <span>✅</span>
-                        </div>
-                    </div>
-                    <div class="school">
-                        <div class="school-name">
-                            市立某某高中 <span>✅</span>
-                        </div>
-                    </div>
-                    <div class="school">
-                        <div class="school-name">
-                            市立某某高中 <span>✅</span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h2>實驗階段</h2>
-                    <div class="school">
-                        <div class="school-name">
                             市立某某高中 <span>🟡</span>
                         </div>
                         <div>目前處於登記不懲除</div>
@@ -298,6 +288,24 @@
                             <div>2023/5/12 ❌</div>
                         </div>
                     </div>
+                    <div class="school">
+                        <div class="school-name">
+                            市立某某高中 <span>✅</span>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            市立某某高中 <span>✅</span>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            市立某某高中 <span>✅</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2>實驗階段</h2>
                     <div class="school">
                         <div class="school-name">
                             市立某某高中 <span>🟡</span>
@@ -348,6 +356,12 @@
         </main>
 
         <div class="report">
+            <div
+                class="x"
+                onclick="document.body.classList.remove('reporting');"
+            >
+                ✖
+            </div>
             <h2>回報現況</h2>
             <form>
                 <label for="">補充說明 (如登記不懲處)</label>

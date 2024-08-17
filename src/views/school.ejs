@@ -6,7 +6,7 @@
         <%- include("partials/meta") %>
         <title><%= !!locals.schoolName?schoolName:'' %> | 學聲 EduVoice</title>
         <style>
-            main {
+              main {
                 padding-top: 5rem;
                 transition: all 0.5s;
             }
@@ -36,26 +36,129 @@
                 flex-grow: 1;
                 min-width: 14rem;
                 gap: 2rem;
+                line-height: 1.4;
             }
             .pie {
                 width: 10rem;
                 height: 10rem;
                 border-radius: 50%;
                 background: conic-gradient(
-                    #f00 0% 20%,
-                    rgb(163, 163, 163) 20% 30%,
-                    #ff0 30% 60%,
-                    #0f0 60% 100%
+                    #f00 0% 10%,
+                    #ff0 10% 20%,
+                    #0f0 20% 100%
                 );
             }
-            .pie.lol {
-                background: conic-gradient(
-                    rgb(163, 163, 163) 0% 10%,
-                    #ff0 10% 30%,
-                    #0f0 30% 100%
-                );
+            .reporting main {
+                filter: blur(10px) brightness(0.1) grayscale(0.5);
             }
 
+            .report {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                max-width: 600px;
+                width: 100%;
+                background: #fff;
+                padding: 3rem;
+                color: #000;
+                transform: translate(-50%, -50%);
+                border-radius: 2rem;
+                opacity: 0;
+                pointer-events: none;
+            }
+            .reporting .report {
+                opacity: 1;
+                pointer-events: all;
+            }
+            .pie-square {
+                display: inline-block;
+                width: 1rem;
+                height: 1rem;
+                margin-right: 0.5rem;
+            }
+
+            .green {
+                background-color: #0f0;
+            }
+            .yellow {
+                background-color: #ff0;
+            }
+            .red {
+                background-color: #f00;
+            }
+            .tag {
+                background-color: rgb(217, 217, 217);
+                color: #fff;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                border-radius: 6rem;
+                margin-left: 0.5rem;
+            }
+            .rule {
+                background-color: red;
+            }
+            section {
+                padding-block: 1rem;
+            }
+            h1 + p {
+                margin-bottom: 0;
+            }
+            .confirm {
+                background-color: #fffde3;
+                position: relative;
+            }
+            .confirm h2 {
+                margin-bottom: 1rem;
+            }
+            .confirm button,
+            .report button {
+                background-color: #0060df;
+                color: #fff;
+                outline: transparent;
+                border: none;
+                border-radius: 0.375rem;
+                padding: 1rem;
+                font-size: 16px;
+                font-weight: 700;
+                margin-top: 1.25rem;
+                cursor: pointer;
+                display: inline-block;
+                margin-right: 1rem;
+            }
+            .report input {
+                width: 100%;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 0.375rem;
+            }
+            .report label {
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+            button:hover {
+                background-color: #0053c0;
+            }
+            button:active {
+                background-color: #0048a7;
+            }
+            .success {
+                position: absolute;
+                top: 0;
+                left: 0;
+                opacity: 0;
+            }
+            .ask,
+            .success {
+                transition: all 0.5s;
+            }
+
+            .success.reported {
+                opacity: 1;
+            }
+            .ask.reported {
+                opacity: 0;
+            }
             .school-status {
                 display: flex;
                 flex-wrap: wrap;
@@ -70,15 +173,43 @@
             .school-status span {
                 text-align: right;
             }
-            .school-status a {
-                display: flex;
-                justify-content: space-between;
+            .school {
                 padding: 1rem;
                 border-radius: 0.375rem;
                 background-color: #f0f0f0;
                 margin-bottom: 0.5rem;
                 text-decoration: none;
-                color: #000;
+                color: #000000;
+                max-height: 3.21875rem;
+                overflow: hidden;
+                transition: all 0.5s ease-in-out;
+            }
+            .school > div {
+                opacity: 0.5;
+            }
+            .school > div.school-name {
+                opacity: 1;
+            }
+
+            .school:hover {
+                max-height: 500px;
+            }
+
+            .school > div {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+            }
+            .school > div:last-child {
+                margin-bottom: 0;
+            }
+
+            .x {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                font-size: 2rem;
+                cursor: pointer;
             }
         </style>
     </head>
@@ -133,26 +264,107 @@
             <section class="school-status">
                 <div>
                     <h2>已實施</h2>
-                    <a href="">決定是否參加第八節 <span>✅</span></a
-                    ><a href="">穿自己外套 <span>✅</span></a
-                    ><a href="">營養午餐 <span>✅</span></a>
-                    <a href="">圖書館 <span>✅</span></a>
-                    <a href="">福利社 <span>✅</span></a>
-                    <a href="">自主決定晚自習 <span>✅</span></a>
-                    <a href="">電腦借閱 <span>✅</span></a>
-                    <a href="">免費生理用品 <span>✅</span></a>
+                    <div class="school">
+                        <div class="school-name">
+                            穿便服 <span>✅</span>
+                        </div>
+                        <div>目前處於登記不懲除</div>
+                        <div>
+                            <div>成立</div>
+                            <div>2023/5/12 🟡</div>
+                        </div>
+                        <div>
+                            <div>成立</div>
+                            <div>2023/5/12 ❌</div>
+                        </div>
+                        <div>
+                            <div>成立</div>
+                            <div>2023/5/12 ❌</div>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            決定是否參加第八節  <span>✅</span>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            穿自己外套 <span>✅</span>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            營養午餐 <span>✅</span>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            圖書館  <span>✅</span>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            福利社  <span>✅</span>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            自主決定晚自習  <span>✅</span>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            電腦借閱  <span>✅</span>
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    <h2>實驗階段 / 半開放</h2>
-                    <a onclick="alert('更新紀錄\n❌2023.1.1 糾察隊門口登記 (學生)\n🟡 2024.1.1 登記不懲處 (老師)')">穿便服上學 <span>🟡</span></a
-                    ><a href="">上課使用手機 <span>🟡</span></a
-                    ><a href="">心理假 <span>🟡</span></a>
+                    <h2>實驗階段</h2>
+                    <div class="school">
+                        <div class="school-name">
+                            免費生理用品  <span>🟡</span>
+                        </div>
+                        <div>
+                            <div>成立</div>
+                            <div>2023/5/12</div>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            上課使用手機  <span>🟡</span>
+                        </div>
+                        <div>
+                            <div>成立</div>
+                            <div>2023/5/12</div>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            心理假  <span>🟡</span>
+                        </div>
+                        <div>
+                            <div>成立</div>
+                            <div>2023/5/12</div>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <h2>未實施</h2>
-                    <a href="">穿拖鞋上學 <span>❌</span></a
-                    ><a href="">校車 <span>❌</span></a
-                    ><a href="">市立某某高中 <span>❌</span></a>
+                    <div class="school">
+                        <div class="school-name">
+                            穿拖鞋上學  <span>❌</span>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            校車  <span>❌</span>
+                        </div>
+                    </div>
+                    <div class="school">
+                        <div class="school-name">
+                            市立某某高中 <span>❌</span>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>

@@ -1,24 +1,69 @@
 /** @format */
 
 header {
-    max-width: 800px;
-    margin: auto;
-    padding: 7rem 2rem 2rem;
-    font-size: 0.8rem;
+  max-width: 800px;
+  margin: auto;
+  padding: 9rem 2rem 2rem;
+  font-size: 0.8rem;
 }
 header div {
-    color: rgb(29, 29, 31);
+  color: rgb(29, 29, 31);
 }
 h1 {
-    font-size: 2.5rem;
-    line-height: 1.1;
-    font-weight: 700;
-    margin-block: 1.3rem 2rem;
+  font-size: 2.5rem;
+  line-height: 1.1;
+  font-weight: 700;
+  margin-block: 1.3rem 2rem;
 }
 
-.hr{
-    width: 100%;
-    height: 1px;
-    background-color: #d2d2d7;
-    margin: 1rem 0;
+.hr {
+  width: 100%;
+  height: 1px;
+  background-color: #d2d2d7;
+  margin: 1rem 0;
+}
+
+main {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  padding-top: 0;
+}
+p {
+  margin-bottom: 1.5rem;
+}
+h2 {
+  font-size: 1.545rem;
+  margin-block: 3rem 1rem;
+  font-weight: 700;
+}
+.box {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 24px;
+}
+
+#toggle-tldr {
+  display: none;
+}
+
+#tldr {
+  max-height: 3rem;
+  overflow: hidden;
+  position: relative;
+  /* transition: all 0.5s; */
+}
+
+#tldr:has(#toggle-tldr:checked) {
+  max-height: 10000rem;
+}
+
+#tldr label {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  cursor: pointer;
+}
+#tldr h2 {
+  margin: 0;
 }

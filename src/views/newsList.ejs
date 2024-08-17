@@ -1,0 +1,29 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+    <head>
+        <%- include("partials/meta") %>
+        <title>新聞列表 | 學聲 EduVoice</title>
+        <link rel="stylesheet" href="/static/css/search.css" />
+    </head>
+
+    <body class="emfont-GenWanMin">
+        <%- include ("partials/nav") %>
+        <main>
+            <h1>新聞列表</h1>
+            <% if (locals.newsList && newsList.length > 0) { %>
+            <ul>
+                <% newsList.forEach(function(news) { %>
+                <li>
+                    <a href="/s/<%= news.id %>"> <%= news.name %> </a>
+                </li>
+                <% }); %>
+            </ul>
+            <% } else { %>
+            <p>找不到任何結果</p>
+            <% } %>
+        </main>
+        <%- include("partials/footer") %>
+    </body>
+</html>

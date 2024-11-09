@@ -7,6 +7,7 @@ const { fetchSchoolData } = require('./school');
 const pool = mariadb.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
+        port: process.env.DB_PORT,
     password: process.env.DB_PASSWORD,
     connectionLimit: 5,
 });

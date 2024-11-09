@@ -1,9 +1,9 @@
 /** @format */
-
+require('dotenv').config({ override: true });
 const pool = require("./package/sqlconn_init.js");
 const fs = require("fs");
 
-RE_CREATE_ENABLE = false;
+RE_CREATE = process.env.RE_CREATE_ENABLE==1;
 async function initializeDatabase() {
   let conn;
   try {
@@ -15,8 +15,9 @@ async function initializeDatabase() {
       WHERE schema_name = ?
     `, [process.env.DB_NAME]);
     //如果資料庫沒有被建立，或者RE_CREATE_ENABLE為true(開發人員手動調整)，則建立資料庫
-    if (RE_CREATE_ENABLE || db_exist[0]['COUNT(*)']==0) { 
+    if (RE_CREATE || Number(db_exist[0]['COUNT(*)']) == 0) {
       await conn.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
+      console.log((RE_CREATE || Number(db_exist[0]['COUNT(*)']) == 0));
       await conn.query(`USE ${process.env.DB_NAME}`);
 
       // Read backup.sql file content
@@ -35,6 +36,7 @@ async function initializeDatabase() {
       }
       //完全備份
       //mysqldump -u your_username -p --databases your_database_name --add-drop-database --add-drop-table --lock-tables > full_backup.sql
+      console.log("Database is successfully Recreate.");
     }
     console.log("ALL Table is  successfully create.");
 

@@ -14,7 +14,7 @@ async function foucusIssue(ruleId) {
     rh.*, 
     s.name AS school_name
 FROM 
-    Rule_History rh
+    rule_history rh
 JOIN (
     SELECT 
         school, 
@@ -25,7 +25,7 @@ JOIN (
                 WHEN 'X' THEN 1 
             END) as max_score
     FROM 
-        Rule_History
+        rule_history
     WHERE 
         rule = ?
     GROUP BY 
@@ -38,7 +38,7 @@ JOIN (
         WHEN 'X' THEN 1 
     END = subquery.max_score
 JOIN 
-    Schools s ON rh.school = s.id
+    schools s ON rh.school = s.id
 WHERE 
     rh.rule = ?;
 `,
@@ -57,7 +57,7 @@ WHERE
 async function informTime(ruleId) {
   try {
     const Result = await query(
-      "SELECT COUNT(*) as icount FROM Rule_History WHERE rule = ?;",
+      "SELECT COUNT(*) as icount FROM rule_history WHERE rule = ?;",
       [ruleId],
       true
     );
@@ -74,7 +74,7 @@ async function informTime(ruleId) {
 async function getRuleById(ruleId) {
   try {
     const result = await query(
-      "SELECT * FROM Rules WHERE id = ?",
+      "SELECT * FROM rules WHERE id = ?",
       [ruleId],
       true
     );
@@ -91,7 +91,7 @@ async function getRuleById(ruleId) {
 
 async function getRuleTags(ruleId) {
   try {
-    // Rules 表
+    // rules 表
     //     儲存規則的資訊。
     //     每條記錄有一個唯一的 id。
 
@@ -100,14 +100,14 @@ async function getRuleTags(ruleId) {
     //     每條記錄有一個唯一的 id 和對應的 name。
 
     // Rule_tag 表
-    //     這是一個關聯表，用於表示 Rules 和 Tags 之間的多對多關係。
-    //     包含兩個外鍵：rule_id（指向 Rules.id）和 tag_id（指向 Tags.id）。
-    //找到 Rules 表中 ID 為 ruleId 所對應的所有標籤名稱（Tags.name）
+    //     這是一個關聯表，用於表示 rules 和 Tags 之間的多對多關係。
+    //     包含兩個外鍵：rule_id（指向 rules.id）和 tag_id（指向 Tags.id）。
+    //找到 rules 表中 ID 為 ruleId 所對應的所有標籤名稱（Tags.name）
     const result = await query(
-      `SELECT Tags.name FROM Rules
-      JOIN Rule_tag ON Rules.id = Rule_tag.rule_id
+      `SELECT Tags.name FROM rules
+      JOIN Rule_tag ON rules.id = Rule_tag.rule_id
       JOIN Tags ON Rule_tag.tag_id = Tags.id
-      WHERE Rules.id = ?;
+      WHERE rules.id = ?;
 `,
       [ruleId],
       false

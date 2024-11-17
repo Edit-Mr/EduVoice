@@ -1,5 +1,5 @@
 //大家根據自己的學校狀況回報狀態
-const pool = require("./package/sqlconn.js");
+const pool = require("../package/sqlconn.js");
 /**Rule_History */
 // `id` int(11) NOT NULL AUTO_INCREMENT,
 // `rule` int(11) DEFAULT NULL, //事件 ID ，對應到 Roles.id

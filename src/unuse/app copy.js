@@ -2,9 +2,9 @@
 const request = require("request");
 const express = require("express");
 const path = require("path");
-const { initializeDatabase } = require("./database"); //創建表格
+const { initializeDatabase } = require("../database.js"); //創建表格
 const { newAnnouncement } = require("./newsCreate.js"); //新增公告
-const { newUser } = require("./regester"); //新增用戶
+const { newUser } = require("../regester.js"); //新增用戶
 
 //要插入被 forigkey 關聯的表格
 
@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 
 // 登入
 const { login } = require("./auth");
-const { randomString } = require("./package/randString.js"); //產生隨機字串 token
+const { randomString } = require("../package/randString.js"); //產生隨機字串 token
 
 app.get("/oauth", (req, res) => {
     res.render("oauth", { loginStatus: true });
@@ -69,7 +69,7 @@ app.post("/login", async (req, res) => {
     }
 });
 const { isExist } = require("./account.js");
-const { getUserSchool, getRuleStatus } = require("./getinfo");
+const { getUserSchool, getRuleStatus } = require("../getinfo.js");
 app.get("/getinfo", async (req, res) => {
     //select school form Users where email = ?
     //拿 school id 去對應把該校的 Rule_Status每個欄位傳回來，有可能是空的，這時候就顯示未登錄
@@ -215,7 +215,7 @@ app.post("/newAnnouncement", async (req, res) => {
 });
 
 const { getone } = require("./package/getAttr.js"); // Assuming this function is properly defined
-const { allSchool, isSchoolNameExists } = require("./package/allSchool.js"); // Ensure both functions are exported
+const { allSchool, isSchoolNameExists } = require("../package/allSchool.js"); // Ensure both functions are exported
 
 // app.get("/s/:schoolName", async (req, res) => {
 //   try {
@@ -253,7 +253,7 @@ const { allSchool, isSchoolNameExists } = require("./package/allSchool.js"); // 
 //     });
 //   }
 // });
-const { listissue,listschool } = require("./issueList.js"); // Assuming this function is properly defined
+const { listissue,listschool } = require("../issueList.js"); // Assuming this function is properly defined
 app.get("/s/:school/", async (req, res) => {
     try {
         const schoolId = req.params.school;
@@ -373,7 +373,7 @@ app.get("/i/:ruleId", async (req, res) => {
 });
 
 //搜尋符合關鍵字的學校或校規
-const { search } = require("./search");
+const { search } = require("../search.js");
 app.get("/search", async (req, res) => {
     const q = req.query.q;
     results = await search(q);
@@ -389,7 +389,7 @@ app.get("/search", async (req, res) => {
 });
 
 //新的議題
-const { newIssue } = require("./issueCreate.js");
+const { newIssue } = require("../issueCreate.js");
 app.post("/newissue", async (req, res) => {
     const { title, tag, description, mandatory } = req.body;
 
@@ -435,7 +435,7 @@ function sendFlexMessage(replyToken) {
             {
                 type: "flex",
                 altText: "學聲 每日電子報",
-                contents: require("./views/flex/news.json"),
+                contents: require("../views/flex/news.json"),
             },
         ],
     };

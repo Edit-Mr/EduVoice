@@ -1,4 +1,4 @@
-// 給Rules.id ，過濾出所有符合的回報顯示在前端
+// 給rules.id ，過濾出所有符合的回報顯示在前端
 const pool = require("./package/sqlconn.js");
 
 /*  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -11,14 +11,14 @@ async function listissue(ruleId) {
   try {
     conn = await pool.getConnection();
     const query = `
-        SELECT * FROM Rule_History 
+        SELECT * FROM rule_History 
         `;
     const Result = await conn.query(query);
     if (Result.length > 0) {
       console.log(Result);
       return Result; // Return the result if found
     } else {
-      console.log("No entries found in Rule_History");
+      console.log("No entries found in rule_History");
       return [];
     }
   } catch (err) {
@@ -33,14 +33,14 @@ async function listschool(ruleId) {
   try {
     conn = await pool.getConnection();
     const query = `
-        SELECT school FROM Rule_History 
+        SELECT school FROM rule_History 
         `;
     const Result = await conn.query(query);
     if (Result.length > 0) {
       console.log(Result);
       return Result; // Return the result if found
     } else {
-      console.log("No entries found in Rule_History");
+      console.log("No entries found in rule_History");
       return [];
     }
   } catch (err) {

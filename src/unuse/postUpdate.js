@@ -1,4 +1,4 @@
-const pool = require("./package/sqlconn.js");
+const pool = require("../package/sqlconn.js");
 
 async function editPost(title, content, author) {
   //編輯原有的文章

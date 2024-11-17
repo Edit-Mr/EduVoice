@@ -11,9 +11,9 @@ async function getAllRuleStatusInschool(schoolId) {
           rh.timeStamp, 
           rh.status
       FROM 
-          Rules r
+          rules r
       JOIN 
-          Rule_History rh ON r.id = rh.rule
+          rule_history rh ON r.id = rh.rule
       JOIN (
           SELECT 
               rule, 
@@ -24,7 +24,7 @@ async function getAllRuleStatusInschool(schoolId) {
                       WHEN 'X' THEN 1 
                   END) as max_score
           FROM 
-              Rule_History
+              rule_history
           WHERE 
               school = ?
           GROUP BY 

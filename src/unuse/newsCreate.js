@@ -1,4 +1,4 @@
-const pool = require("./package/sqlconn.js");
+const pool = require("../package/sqlconn.js");
 // CREATE TABLE Announcements (
 //     id INT PRIMARY KEY AUTO_INCREMENT,
 //     title VARCHAR(25) NOT NULL,

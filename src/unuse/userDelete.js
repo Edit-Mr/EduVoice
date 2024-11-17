@@ -14,7 +14,7 @@ async function deleteUser(email, verified, passwordHash, userType=NULL, schoolId
     try {
         conn = await pool.getConnection();
         const query = `
-        SELECT * FROM Users WHERE email = ? AND password_hash = ?
+        SELECT * FROM users WHERE email = ? AND password_hash = ?
         `;
         const params = [email, passwordHash];
 
@@ -22,7 +22,7 @@ async function deleteUser(email, verified, passwordHash, userType=NULL, schoolId
 
         if ( varify.length > 0) {
             const deleteq=`
-            DELETE FROM Users WHERE email = ? AND password_hash = ?
+            DELETE FROM users WHERE email = ? AND password_hash = ?
             `;
             const deletep = [email, passwordHash];
             const result = await conn.query(deleteq, deletep);

@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const { initializeDatabase } = require("./database"); //創建表格
-const { newAnnouncement } = require("./newsCreate.js"); //新增公告
+const { newAnnouncement } = require("./unuse/newsCreate.js"); //新增公告
 const { newUser } = require("./regester"); //新增用戶
 const { query } = require("./sqlSearch.js");
 const { setCookie, decodeJwtToken } = require("./package/cookie.js");
@@ -93,7 +93,7 @@ app.post("/login", requireAuth, async (req, res) => {
   }
   try {
     const user = await query(
-      "SELECT * FROM Users WHERE email = ? and password_hash = ?",
+      "SELECT * FROM users WHERE email = ? and password_hash = ?",
       [email, password],
       true
     );
@@ -104,7 +104,7 @@ app.post("/login", requireAuth, async (req, res) => {
       const name = user.nickName,
         schoolId = user.school,
         school = (
-          await query("SELECT name FROM Schools WHERE id = ?", [schoolId], true)
+          await query("SELECT name FROM schools WHERE id = ?", [schoolId], true)
         ).name;
       console.log("歡迎用戶", email, name, schoolId, school);
       console.log("準備發 JWT");
@@ -138,7 +138,7 @@ app.post("/login", requireAuth, async (req, res) => {
 
 const { getUserSchool, getRuleStatus } = require("./getinfo");
 app.get("/getinfo", requireAuth, async (req, res) => {
-  //select school form Users where email = ?
+  //select school form users where email = ?
   //拿 school id 去對應把該校的 Rule_Status每個欄位傳回來，有可能是空的，這時候就顯示未登錄
   const email = req.query.email; // Assuming email is passed as a query parameter
   try {
@@ -174,7 +174,7 @@ app.post("/oauth", requireAuth, async (req, res) => {
   console.log("post-oauth");
   const { email } = req.body;
   //撈一下資料，看看要跳登入頁面或是註冊頁面
-  vip = await query("SELECT * FROM Users WHERE email = ?", [email], true);
+  vip = await query("SELECT * FROM users WHERE email = ?", [email], true);
   if (vip) {
     return Render(res, "login", req, 200, { email, message: "" });
   } else {
@@ -184,7 +184,7 @@ app.post("/oauth", requireAuth, async (req, res) => {
 
 // 註冊
 app.post("/register", requireAuth, async (req, res) => {
-  //INSERT INTO Users (email, verified, password_hash, user_type, school,token)VALUES (?, ?, ?, ?, ?,?)
+  //INSERT INTO users (email, verified, password_hash, user_type, school,token)VALUES (?, ?, ?, ?, ?,?)
   //新增一個新用戶
   console.log(req.body);
   const { email, schoolEmail, name, password, confirmPassword, school } =
@@ -205,7 +205,7 @@ app.post("/register", requireAuth, async (req, res) => {
     });
   }
   //檢查帳號是否已經存在
-  query("SELECT * FROM Users WHERE email = ?", [email], true).then((rows) => {
+  query("SELECT * FROM users WHERE email = ?", [email], true).then((rows) => {
     //undefined 表示和資料庫已存在帳號不重複
     if (rows) {
       return Render(res, "register", req, 400, {
@@ -345,6 +345,7 @@ app.get("/i/:ruleId", requireAuth, async (req, res) => {
 //搜尋符合關鍵字的學校或校規
 const { search } = require("./search");
 app.get("/search", requireAuth, async (req, res) => {
+  console.log("Warrning：本頁可能有 SQL Injection 2024/11/17 by iach");
   const q = req.query.q;
   results = await search(q);
   const schools = results.schools || [];

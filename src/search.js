@@ -6,7 +6,7 @@ async function sdoget(table, keyword) {
   try {
     conn = await pool.getConnection();
     let attr1, attr2;
-    if (table === "Schools") {
+    if (table === "schools") {
       attr1 = "name";
       attr2 = "location";
     } else {
@@ -38,8 +38,8 @@ async function sdoget(table, keyword) {
 async function search(keyword) {
   try {
     const [schoolRes, ArticleRes] = await Promise.all([
-      sdoget("Schools", keyword),
-      sdoget("Rules", keyword),
+      sdoget("schools", keyword),
+      sdoget("rules", keyword),
     ]);
 
     // Format schoolRes into the desired format

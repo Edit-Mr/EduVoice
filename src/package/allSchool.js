@@ -4,7 +4,7 @@ async function allSchool() {
   let conn;
   try {
     conn = await pool.getConnection();
-    const query = "SELECT * FROM Schools";
+    const query = "SELECT * FROM schools";
     const rows = await conn.query(query);
     const schoolsByLocation = rows.reduce((acc, school) => {
       const location = school.location;

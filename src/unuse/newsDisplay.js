@@ -1,4 +1,4 @@
-const pool = require("./package/sqlconn.js");
+const pool = require("../package/sqlconn.js");
 
 async function newsDisplay() {
   try {

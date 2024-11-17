@@ -8,7 +8,7 @@ async function newUser(nickname,email, passwordHash, schoolId, token,schoolEmail
 
     const TOKEN = randomString();
     const query = `
-            INSERT INTO Users (nickname,email, password_hash, school,token,backupMail)
+            INSERT INTO users (nickname,email, password_hash, school,token,backupMail)
             VALUES (?,?, ?, ?, ?,?)
         `;
     const params = [nickname,email, passwordHash, schoolId, token,schoolEmail];

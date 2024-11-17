@@ -29,7 +29,7 @@ async function getRuleStatus(schoolId) {
   try {
     conn = await pool.getConnection();
     const query = `
-      SELECT * FROM Rule_Status WHERE school = ?
+      SELECT * FROM rule_status WHERE school = ?
     `;
     const params = [schoolId];
     const rows = await conn.query(query, params);

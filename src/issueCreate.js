@@ -7,7 +7,7 @@ async function newIssue(title, tag, description, mandatory) {
   try {
     conn = await pool.getConnection();
     const query = `
-        INSERT INTO Rules (title, tag, content, is_mandatory)
+        INSERT INTO rules (title, tag, content, is_mandatory)
         VALUES (?, ?, ?, ?)
         `;
     const params = [title, tag, description, mandatory];

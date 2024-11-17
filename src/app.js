@@ -216,7 +216,7 @@ app.post("/register", requireAuth, async (req, res) => {
   });
   try {
     let schoolId = await query(
-      "SELECT id FROM Schools WHERE name = ?",
+      "SELECT id FROM schools WHERE name = ?",
       [school],
       true
     );
@@ -265,7 +265,7 @@ app.get("/s/:school/", requireAuth, async (req, res) => {
   //schoolData.[sql欄位名稱]可以取得該校的資料
   try {
     schoolData = await query(
-      "SELECT * FROM Schools WHERE id = ?",
+      "SELECT * FROM schools WHERE id = ?",
       [schoolId],
       true
     );

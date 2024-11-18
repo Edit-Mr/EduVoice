@@ -290,7 +290,7 @@ app.get("/s/:school/", requireAuth, async (req, res) => {
     });
   }
 });
-
+const { newFeedback } = require("./issue/feedback.js");
 //nowPtr works
 //回報規定狀態，即是往資料庫插入一筆新的資料
 app.post("/ireport", requireAuth, async (req, res) => {
@@ -298,7 +298,32 @@ app.post("/ireport", requireAuth, async (req, res) => {
   {
     res.redirect('/oauth');
   }
-  return Render(res, "issue", req);
+  const feed_back = req.body;
+  console.log("ireport:", req.body);
+  if (feed_back.rulert && feed_back.status) {
+    try {
+      console.log("feed_back:", feed_back.status);
+      if(feed_back.status  == "X" || feed_back.status == "O" || feed_back.status == "?")
+      {
+        result=newFeedback(feed_back.rulert, req.userPlantext.schoolId, feed_back.describe,feed_back.status);
+      }
+      else
+      {
+        throw new Error("status error");
+      }
+      if (result) {
+        console.log("回報成功");
+        return res.redirect("/i/" + feed_back.rulert);
+      }
+    } catch (error) {
+      console.error("Error in /ireport route:", error);
+      return Render(res, "signupResult", req, 500, {
+        result: "喔哦",
+        message: "伺服器似乎出現了點問題...",
+      });
+    }
+  
+  }
 });
 
 const {

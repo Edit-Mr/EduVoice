@@ -2,34 +2,42 @@
 
 <!DOCTYPE html>
 <html lang="zh-Hant">
-    <head>
-        <%- include("partials/meta") %>
-        <title><%= ruleDetail.title %> | 學聲 EduVoice</title>
+
+<head>
+    <%- include("partials/meta") %>
+        <title>
+            <%= ruleDetail.title %> | 學聲 EduVoice
+        </title>
 
         <style>
             main {
                 padding-top: 5rem;
                 transition: all 0.5s;
             }
+
             .intro-container {
                 display: flex;
                 gap: 2rem;
             }
+
             .intro {
                 flex-grow: 1;
             }
+
             .box {
                 background-color: #fff;
                 border-radius: 1rem;
                 padding: 24px;
                 flex-grow: 1;
             }
+
             .pie-chart {
                 flex: 0 0;
                 display: flex;
                 flex-direction: column;
                 white-space: nowrap;
             }
+
             .pie-box {
                 display: flex;
                 justify-content: center;
@@ -39,12 +47,14 @@
                 gap: 2rem;
                 line-height: 1.4;
             }
+
             .pie {
                 width: 10rem;
                 height: 10rem;
                 border-radius: 50%;
                 /* 下面 Script 會把圓餅的 CSS 切出來，會在分類學校進度的時候把總數數出來，不想要讓時間複雜度是 2n */
             }
+
             .reporting main {
                 filter: blur(10px) brightness(0.1) grayscale(.5);
             }
@@ -63,10 +73,12 @@
                 opacity: 0;
                 display: none;
             }
+
             .reporting .report {
                 opacity: 1;
                 display: block;
             }
+
             .pie-square {
                 display: inline-block;
                 width: 1rem;
@@ -77,12 +89,15 @@
             .green {
                 background-color: #0f0;
             }
+
             .yellow {
                 background-color: #ff0;
             }
+
             .red {
                 background-color: #f00;
             }
+
             .tag {
                 background-color: rgb(217, 217, 217);
                 color: #fff;
@@ -91,22 +106,28 @@
                 border-radius: 6rem;
                 margin-left: 0.5rem;
             }
+
             .rule {
                 background-color: red;
             }
+
             section {
                 padding-block: 1rem;
             }
-            h1 + p {
+
+            h1+p {
                 margin-bottom: 0;
             }
+
             .confirm {
                 background-color: #fffde3;
                 position: relative;
             }
+
             .confirm h2 {
                 margin-bottom: 1rem;
             }
+
             .confirm button,
             .report button {
                 background-color: #0060df;
@@ -122,6 +143,7 @@
                 display: inline-block;
                 margin-right: 1rem;
             }
+
             .report input {
                 width: 100%;
                 padding: 1rem;
@@ -129,22 +151,27 @@
                 border: 1px solid #ccc;
                 border-radius: 0.375rem;
             }
+
             .report label {
                 display: block;
                 margin-bottom: 0.5rem;
             }
+
             button:hover {
                 background-color: #0053c0;
             }
+
             button:active {
                 background-color: #0048a7;
             }
+
             .success {
                 position: absolute;
                 top: 0;
                 left: 0;
                 opacity: 0;
             }
+
             .ask,
             .success {
                 transition: all 0.5s;
@@ -153,25 +180,31 @@
             .success.reported {
                 opacity: 1;
             }
+
             .ask.reported {
                 opacity: 0;
             }
+
             .school-status {
                 display: flex;
                 flex-wrap: wrap;
-                gap:2rem;
+                gap: 2rem;
             }
-            .school-status > div {
+
+            .school-status>div {
                 flex: 1;
             }
+
             .school-status h2 {
                 text-align: center;
             }
+
             .school-status span {
                 text-align: right;
             }
+
             .school-status a {
-                display: flex;  
+                display: flex;
                 justify-content: space-between;
                 padding: 1rem;
                 border-radius: 0.375rem;
@@ -180,46 +213,52 @@
                 text-decoration: none;
                 color: #000;
             }
-            .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #f00;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            text-align: center;
-            line-height: 20px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .close-btn:hover {
-            background: #c00;
-        }
-        </style>
-    </head>
 
-    <body class="aemfont-GenWanMin">
-        <%- include ("partials/nav") %>
+            .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: #f00;
+                color: #fff;
+                border: none;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                text-align: center;
+                line-height: 20px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+
+            .close-btn:hover {
+                background: #c00;
+            }
+        </style>
+</head>
+
+<body class="aemfont-GenWanMin">
+    <%- include ("partials/nav") %>
         <main>
             <section>
                 <h1>
-                    <%= ruleDetail.title %> 
+                    <%= ruleDetail.title %>
 
-                    <% if(ruleTags.length == 0){ %>
-                        <span class="tag rule">未分類</span>
-                    <% } %>
-                    <% ruleTags.forEach(tag => { %>
-                        <%if (tag == "法規") { %>
-                            <span class="tag rule">法規</span>
-                        <% }else{ %>
-                            <span class="tag"><%= tag %></span>
+                        <% if(ruleTags.length==0){ %>
+                            <span class="tag rule">未分類</span>
                             <% } %>
-                        <% }); %>  
+                                <% ruleTags.forEach(tag=> { %>
+                                    <%if (tag=="法規" ) { %>
+                                        <span class="tag rule">法規</span>
+                                        <% }else{ %>
+                                            <span class="tag">
+                                                <%= tag %>
+                                            </span>
+                                            <% } %>
+                                                <% }); %>
                 </h1>
-                <p><%= ruleStatus.length %> 間學校資料，<%= totalinfo %> 次通報</p>
+                <p>
+                    <%= ruleStatus.length %> 間學校資料，<%= totalinfo %> 次通報
+                </p>
             </section>
             <section class="intro-container">
                 <div class="intro box">
@@ -233,14 +272,14 @@
                     <div class="pie-box">
                         <div class="pie"></div>
                         <div>
-                            <div class="green pie-square" ></div>
+                            <div class="green pie-square"></div>
                             <span id="implemented">已實施 :</span>
-                            <br/>
+                            <br />
                             <div class="yellow pie-square"></div>
                             <span id="Testing">實驗中 :</span>
                             <br />
                             <div class="red pie-square"></div>
-                            <span  id="notYet">未實施 :</span>
+                            <span id="notYet">未實施 :</span>
                         </div>
                     </div>
                 </div>
@@ -259,82 +298,84 @@
                     </div>
                 </div>
             </section>
-            <% 
-                let countDone = 0, countNotYet = 0, countTesting = 0;
-            %>
-            <section class="school-status">
-                <div>
-                    <h2>已實施</h2>
-                        <% ruleStatus.forEach(rule => { %>
-                                <%if (rule.status == "O") { %>
-                                    <%countDone++;%>
-                                    <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>✅</span></a>
-                        <% }}); %>  
-                </div>
-                <div>
-                    <h2>實驗階段</h2>
-                    <% ruleStatus.forEach(rule => { %>
-                        <%if (rule.status == "?") { %>
-                            <%countTesting++;%>
-                            <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>🟡</span></a>
-                <% }}); %>
-                </div>
-                <div>
-                    <h2>未實施</h2>
-                    <% ruleStatus.forEach(rule => { %>
-                        <%if (rule.status == "X") { %>
-                            <%countNotYet++;%>
-                            <a href="/s/<%= rule.school %>"><%= rule.school_name %> <span>❌</span></a>
-                <% }}); %>
-                </div>
-                <% const totalCount = countDone + countNotYet + countTesting;%>
-            </section>
+            <% let countDone=0, countNotYet=0, countTesting=0; %>
+                <section class="school-status">
+                    <div>
+                        <h2>已實施</h2>
+                        <% ruleStatus.forEach(rule=> { %>
+                            <%if (rule.status=="O" ) { %>
+                                <%countDone++;%>
+                                    <a href="/s/<%= rule.school %>">
+                                        <%= rule.school_name %> <span>✅</span>
+                                    </a>
+                                    <% }}); %>
+                    </div>
+                    <div>
+                        <h2>實驗階段</h2>
+                        <% ruleStatus.forEach(rule=> { %>
+                            <%if (rule.status=="?" ) { %>
+                                <%countTesting++;%>
+                                    <a href="/s/<%= rule.school %>">
+                                        <%= rule.school_name %> <span>🟡</span>
+                                    </a>
+                                    <% }}); %>
+                    </div>
+                    <div>
+                        <h2>未實施</h2>
+                        <% ruleStatus.forEach(rule=> { %>
+                            <%if (rule.status=="X" ) { %>
+                                <%countNotYet++;%>
+                                    <a href="/s/<%= rule.school %>">
+                                        <%= rule.school_name %> <span>❌</span>
+                                    </a>
+                                    <% }}); %>
+                    </div>
+                    <% const totalCount=countDone + countNotYet + countTesting;%>
+                </section>
         </main>
-        <%
-            const Red = ((countNotYet / totalCount) * 100).toFixed(0);
-            const yellow = ((countTesting / totalCount) * 100).toFixed(0);
-            const green = ((countDone / totalCount) * 100).toFixed(0);
-            const pieFalg = totalCount == 0 ? false : true;//表示是否有資料
-        %>
-        <script>
-            let pieRed =0;
-            //不用管 VSC 的紅色波浪線，這是 EJS 的語法，不是 JS 的語法
-            if(<%= pieFalg %>){
-                document.getElementsByClassName('pie')[0].style.background = `conic-gradient(
+        <% const Red=((countNotYet / totalCount) * 100).toFixed(0); const yellow=((countTesting / totalCount) *
+            100).toFixed(0); const green=((countDone / totalCount) * 100).toFixed(0); const pieFalg=totalCount==0 ?
+            false : true;//表示是否有資料 %>
+            <script>
+                let pieRed = 0;
+                //不用管 VSC 的紅色波浪線，這是 EJS 的語法，不是 JS 的語法
+                if (<%= pieFalg %>) {
+                    document.getElementsByClassName('pie')[0].style.background = `conic-gradient(
                         #f00 0% <%- Red %>%,
                         #ff0 <%- Red %>% <%- Red+yellow %>%,
                         #0f0 <%- Red+yellow %>% 100%
                     )`;
-                document.getElementById('notYet').innerText += ` <%- Red %>%`;
-                document.getElementById('Testing').innerText += ` <%- yellow %>%`;
-                document.getElementById('implemented').innerText += ` <%- green %>%`;
-            }
+                    document.getElementById('notYet').innerText += ` <%- Red %>%`;
+                    document.getElementById('Testing').innerText += ` <%- yellow %>%`;
+                    document.getElementById('implemented').innerText += ` <%- green %>%`;
+                }
             else
-            {
-                document.getElementsByClassName('pie')[0].style.background = `conic-gradient(
+                {
+                    document.getElementsByClassName('pie')[0].style.background = `conic-gradient(
                         #cfcfcc 0% 100%
                     )`;
-                document.getElementById('notYet').innerText ="沒有資料"
-                document.getElementById('Testing').innerText="沒有資料"
-                document.getElementById('implemented').innerText ="沒有資料"
-            }
-            function exit(){
-                document.body.classList.remove('reporting');
-                document.body.classList.add('reported')
-            }
-          </script> 
-        <div class="report">
-            <h2>回報現況</h2>
-            <div class="close-btn" onclick="exit()">X</div>
-            <form action="/ireport" method="post">
-                <label for="">補充說明 (如登記不懲處)</label>
-                <input type="text" name="" id="" />
-                <button onclick="exit()" type="submit" name="status" value="notYet">未實施</button>
-                <button onclick="exit()" type="submit" name="status" value="testing">實驗階段</button>
-                <button onclick="exit()" type="submit" name="status" value="done">已實施</button>
-                <input type="hidden" name="rulert" value="<%= ruleDetail.id %>"/>
-            </form>
-        </div>
-        <%- include("partials/footer") %>
-    </body>
+                    document.getElementById('notYet').innerText = "沒有資料"
+                    document.getElementById('Testing').innerText = "沒有資料"
+                    document.getElementById('implemented').innerText = "沒有資料"
+                }
+                function exit() {
+                    document.body.classList.remove('reporting');
+                    document.body.classList.add('reported')
+                }
+            </script>
+            <div class="report">
+                <h2>回報現況</h2>
+                <div class="close-btn" onclick="exit()">X</div>
+                <form action="/ireport" method="post">
+                    <label for="">補充說明 (如登記不懲處)</label>
+                    <input type="text" name="describe" value="" />
+                    <button onclick="exit()" type="submit" name="status" value="X">未實施</button>
+                    <button onclick="exit()" type="submit" name="status" value="?">實驗階段</button>
+                    <button onclick="exit()" type="submit" name="status" value="?">已實施</button>
+                    <input type="hidden" name="rulert" value="<%= ruleDetail.id %>" />
+                </form>
+            </div>
+            <%- include("partials/footer") %>
+</body>
+
 </html>

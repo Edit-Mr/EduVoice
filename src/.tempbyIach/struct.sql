@@ -82,7 +82,7 @@ CREATE TABLE `rule_history` (
   `id` int NOT NULL AUTO_INCREMENT,
   `rule` int DEFAULT NULL,
   `school` int DEFAULT NULL,
-  `change_description` text COLLATE utf8mb4_general_ci NOT NULL,
+  `change_description` varchar(50) COLLATE utf8mb4_general_ci,
   `timeStamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('O','X','?') COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),

@@ -2,15 +2,16 @@
 
 <!DOCTYPE html>
 <html lang="zh-Hant">
-    <head>
-        <%- include("partials/meta") %>
+
+<head>
+    <%- include("partials/meta") %>
         <title>註冊 | 學聲 EduVoice</title>
         <meta property="og:url" content="https://eduvoice.emtech.cc" />
         <link rel="stylesheet" href="/static/css/login.css" />
-    </head>
+</head>
 
-    <body class="emfont-GenWanMin">
-        <%- include("partials/nav") %>
+<body class="emfont-GenWanMin">
+    <%- include("partials/nav") %>
         <header></header>
         <main>
             <h1>建立新帳號</h1>
@@ -18,83 +19,59 @@
             <p class="error"><%- message %></p>
             <form action="/register" method="post" id="registerForm">
                 <label for="email">個人電子郵件地址</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="請輸入您的電子郵件地址"
-                    required
-                    value="<%= email %>"
-                />
+                <input type="email" id="email" name="email" placeholder="請輸入您的電子郵件地址" required value="<%= email %>" />
                 <label for="schoolEmail">校園電子郵件地址 (可選)</label>
-                <input
-                    type="text"
-                    id="schoolEmail"
-                    name="schoolEmail"
-                    placeholder="請輸入您的校園電子郵件地址"
-                />
+                <input type="text" id="schoolEmail" name="schoolEmail" placeholder="請輸入您的校園電子郵件地址" />
                 <label for="name">匿名</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="請輸入您的匿名"
-                    required
-                />
+                <input type="text" id="name" name="name" placeholder="請輸入您的匿名" required />
                 <label for="password">密碼</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="請輸入您的密碼"
-                    required
-                />
+                <input type="password" id="password" name="password" placeholder="請輸入您的密碼" required />
                 <label for="password">確認密碼</label>
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    placeholder="請再次輸入您的密碼"
-                    required
-                />
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="請再次輸入您的密碼" required />
                 <label for="school">學校</label>
                 <input list="schools" id="school" name="school" />
                 <datalist id="schools">
-                    <option value="Chrome"></option>
+                    <% schoolList.forEach(school=> {%>
+                        <% if (school.name) { %>
+                            <option value="<%= school.name %>"></option>
+                            <% } %>
+                                <% }); %>
+                                    <!-- <option value="Chrome"></option>
                     <option value="Firefox"></option>
                     <option value="Safari"></option>
                     <option value="Edge"></option>
-                    <option value="Opera"></option>
+                    <option value="Opera"></option> -->
                 </datalist>
                 <button type="submit">註冊</button>
                 <p class="error" id="error-msg"></p>
             </form>
         </main>
         <%- include("partials/footer") %>
-        <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-            const form = document.getElementById("registerForm");
-            form.addEventListener("submit", function(e) {
-                const password = document.getElementById("password").value;
-                const confirmPassword = document.getElementById("confirmPassword").value;
-                let problem = "";
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const form = document.getElementById("registerForm");
+                    form.addEventListener("submit", function (e) {
+                        const password = document.getElementById("password").value;
+                        const confirmPassword = document.getElementById("confirmPassword").value;
+                        let problem = "";
 
-                if (password !== confirmPassword) {
-                    problem = "密碼不一致";
-                }
+                        if (password !== confirmPassword) {
+                            problem = "密碼不一致";
+                        }
 
-                const schoolEmail = document.getElementById("schoolEmail").value;
-                if (schoolEmail !== "" && !schoolEmail.includes("edu")) {
-                    problem += "\n校園電子郵件地址必須是學校的電子郵件 (若你認為這是錯誤，請聯絡我們)";
-                }
+                        const schoolEmail = document.getElementById("schoolEmail").value;
+                        if (schoolEmail !== "" && !schoolEmail.includes("edu")) {
+                            problem += "\n校園電子郵件地址必須是學校的電子郵件 (若你認為這是錯誤，請聯絡我們)";
+                        }
 
-                if (problem !== "") {
-                    e.preventDefault();
-                    document.querySelector("#error-msg").textContent = problem;
-                    return;
-                }
-            });
-        });
-        </script>
-    </body>
+                        if (problem !== "") {
+                            e.preventDefault();
+                            document.querySelector("#error-msg").textContent = problem;
+                            return;
+                        }
+                    });
+                });
+            </script>
+</body>
+
 </html>

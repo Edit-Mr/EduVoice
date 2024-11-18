@@ -178,7 +178,9 @@ app.post("/oauth", requireAuth, async (req, res) => {
   if (vip) {
     return Render(res, "login", req, 200, { email, message: "" });
   } else {
-    return Render(res, "register", req, 200, { email, message: "" });
+    //註冊頁面
+    schoolList = await query("SELECT name FROM schools", [], false);
+    return Render(res, "register", req, 200, { schoolList,email, message: "" });
   }
 });
 

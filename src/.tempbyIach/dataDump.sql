@@ -49,7 +49,8 @@ UNLOCK TABLES;
 
 LOCK TABLES `rule_history` WRITE;
 /*!40000 ALTER TABLE `rule_history` DISABLE KEYS */;
-INSERT INTO `rule_history` VALUES (1,1,262,'jgjgwej','2024-07-07 02:20:26',NULL);
+INSERT INTO `rule_history` VALUES (1,1,262,'jgjgwej','2024-07-07 02:20:26','O');
+INSERT INTO `rule_history` VALUES (2,1,261,'jgjgwej','2024-11-07 02:20:26','?');
 /*!40000 ALTER TABLE `rule_history` ENABLE KEYS */;
 UNLOCK TABLES;
 

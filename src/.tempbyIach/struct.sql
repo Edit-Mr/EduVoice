@@ -189,6 +189,7 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(25) NOT NULL,
   `email` varchar(25) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `backupMail` varchar(25) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT '0',

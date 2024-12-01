@@ -48,12 +48,23 @@
                     #0f0 60% 100%
                 ); */
             }
-            .pie.lol {
-                background: conic-gradient(
-                    rgb(163, 163, 163) 0% 10%,
-                    #ff0 10% 30%,
-                    #0f0 30% 100%
-                );
+            .pie-square {
+                display: inline-block;
+                width: 1rem;
+                height: 1rem;
+                margin-right: 0.5rem;
+            }
+
+            .green {
+                background-color: #0f0;
+            }
+
+            .yellow {
+                background-color: #ff0;
+            }
+
+            .red {
+                background-color: #f00;
             }
 
             .school-status {
@@ -99,40 +110,42 @@
                 </div>
                 <div class="pie-chart box">
                     <h2>遵守法規</h2>
-                    <div class="pie-box">
+                    <div class="pie-box comply_rules">
                         <!-- 這一塊派不確定要統計什麼 -->
-                        <div class="pie lol"></div>
+                        <div class="pie" id="comply_rule_pie"></div>
                         <div>
                             <div class="green pie-square"></div>
-                            已實施： 30% <br />
+                            <span class="implemented">已實施 ：</span>
+                            <br/>
                             <div class="yellow pie-square"></div>
-                            實驗中： 10% <br />
+                            <span class="Testing">實驗中 ：</span>
+                            <br/>
                             <div class="red pie-square"></div>
-                            未實施 ： 50%<br />
-                            <div class="red pie-square"></div>
-                            未知: 10%
+                            <span class="notYet">未實施 ：</span>
                         </div>
                     </div>
                 </div>
                 <div class="pie-chart box">
                     <h2>所有政策</h2>
-                    <div class="pie-box">
-                        <div class="pie" id="allPolicies"></div>
+                    <div class="pie-box list_all">
+                        <!-- list_all 是母標籤，用分別兩張圓餅的狀態 -->
+                        <div class="pie" id="allPolicies_pie"></div>
                         <div>
                             <div class="green pie-square" ></div>
-                            <span id="implemented">已實施 ：</span>
+                            <span class="implemented">已實施 ：</span>
                             <br/>
                             <div class="yellow pie-square"></div>
-                            <span id="Testing">實驗中 ：</span>
+                            <span class="Testing">實驗中 ：</span>
                             <br />
                             <div class="red pie-square"></div>
-                            <span  id="notYet">未實施 ：</span>
+                            <span class="notYet">未實施 ：</span>
                         </div>
                     </div>
                 </div>
             </section>
             <% 
             let countDone = 0, countNotYet = 0, countTesting = 0;
+            let mandatoryDone = 0, mandatoryNotYet = 0, mandatoryTesting = 0;
             %>
             <section class="school-status">
                 <div>
@@ -143,6 +156,8 @@
                                 <%if (rule.status == "O") { %>
                                     <%countDone++;%>
                                     <a href="/i/<%= rule.id %>"><%= rule.title %> <span>✅</span></a>
+                                    <% if (rule.is_mandatory) { %>
+                                        <%mandatoryDone++;}%>
                             <% }}); %>
                     <% } else { %>
                         <p>目前沒有資料</p>
@@ -157,6 +172,8 @@
                                     <%countTesting++;%>
                                     <!-- <a onclick="alert('更新紀錄\n❌2023.1.1 糾察隊門口登記 (學生)\n🟡 2024.1.1 登記不懲處 (老師)')">穿便服上學 <span>🟡</span></a> -->
                                     <a href="/i/<%= rule.id %>"><%= rule.title %> <span>🟡</span></a>
+                                    <% if (rule.is_mandatory) { %>
+                                        <%mandatoryTesting++;}%>
                             <% }}); %>
                     <% } else { %>
                         <p>目前沒有資料</p>
@@ -170,43 +187,73 @@
                                 <%if (rule.status == "X") { %>
                                     <%countNotYet++;%>
                                     <a href="/i/<%= rule.id %>"><%= rule.title %> <span>❌</span></a>
+                                    <% if (rule.is_mandatory) { %>
+                                        <%mandatoryNotYet++;}%>
                             <% }}); %>
                     <% } else { %>
                         <p>目前沒有資料</p>
                     <% } %>
                 </div>
-                <% const totalCount = countDone + countNotYet + countTesting;%>
+                <% const totalCount = countDone + countNotYet + countTesting;
+                const mandatoryTotal = mandatoryDone + mandatoryNotYet + mandatoryTesting;
+                %>
             </section>
         </main>
         <%
-            const Red= ((countNotYet / totalCount) * 100).toFixed(0);
-            const yellow= ((countTesting / totalCount) * 100).toFixed(0);
-            const green = ((countDone / totalCount) * 100).toFixed(0);
-            const pieFalg = totalCount == 0 ? false : true;//表示是否有資料
+            const all_policy_Red= ((countNotYet / totalCount) * 100).toFixed(0);
+            const all_policy_yellow= ((countTesting / totalCount) * 100).toFixed(0);
+            const all_policy_green = ((countDone / totalCount) * 100).toFixed(0);
+            const all_policy_pieFalg = totalCount == 0 ? false : true;//表示是否有資料
+
+            const mandatory_Red= ((mandatoryNotYet / mandatoryTotal) * 100).toFixed(0);
+            const mandatory_yellow= ((mandatoryTesting / mandatoryTotal) * 100).toFixed(0);
+            const mandatory_green = ((mandatoryDone / mandatoryTotal) * 100).toFixed(0);
+            const mandatory_pieFalg = mandatoryTotal == 0 ? false : true;//表示是否有資料
         %>
         <script>
+            function shownodata(pie_class="")
+            {
+                //comply_rules or list_all
+                console.log(`${pie_class}.pie`)
+                document.querySelector(`${pie_class}.notYet`).innerText ="沒有資料"
+                document.querySelector(`${pie_class}.Testing`).innerText="沒有資料"
+                document.querySelector(`${pie_class}.implemented`).innerText ="沒有資料"
+                document.querySelector(`${pie_class}.pie`).style.background = `conic-gradient(
+                        #cfcfcc 0% 100%
+                    )`;
+            }
             let pieRed =0;
             //不用管 VSC 的紅色波浪線，這是 EJS 的語法，不是 JS 的語法
-            if(<%= pieFalg %>){
-                document.getElementById('allPolicies').style.background = `conic-gradient(
-                        #f00 0% <%- Red %>%,
-                        #ff0 <%- Red %>% <%- Red+yellow %>%,
-                        #0f0 <%- Red+yellow %>% 100%
+            if(<%= all_policy_pieFalg %>){
+                document.getElementById('allPolicies_pie').style.background = `conic-gradient(
+                        #f00 0% <%- all_policy_Red %>%,
+                        #ff0 <%- all_policy_Red %>% <%- all_policy_Red+all_policy_yellow %>%,
+                        #0f0 <%- all_policy_Red+all_policy_yellow %>% 100%
                     )`;
-                document.getElementById('notYet').innerText += ` <%- Red %>%`;
-                document.getElementById('Testing').innerText += ` <%- yellow %>%`;
-                document.getElementById('implemented').innerText += ` <%- green %>%`;
-                console.log('red:',<%- Red %>)
+                document.querySelector('.list_all .implemented').innerText += ` <%- all_policy_green %>%`;
+                document.querySelector('.list_all .notYet').innerText += ` <%- all_policy_Red %>%`;
+                document.querySelector('.list_all .Testing').innerText += ` <%- all_policy_yellow %>%`;
+                if(<%= mandatory_pieFalg %>){
+                    
+                    document.getElementById('comply_rule_pie').style.background = `conic-gradient(
+                        #f00 0% <%- mandatory_Red %>%,
+                        #ff0 <%- mandatory_Red %>% <%- mandatory_Red+mandatory_yellow %>%,
+                        #0f0 <%- mandatory_Red+mandatory_yellow %>% 100%
+                    )`;
+                    document.querySelector('.comply .implemented').innerText += ` <%- mandatory_green %>%`;
+                    document.querySelector('.comply .notYet').innerText += ` <%- mandatory_Red %>%`;
+                    document.querySelector('.comply .Testing').innerText += ` <%- mandatory_yellow %>%`;
+                }
+                else
+                {
+                    // 選擇器空格一定要留著，因為要選擇某個 class 底下的元素做修改
+                    shownodata('.comply_rules ');
+                }
             }
             else
             {
-                
-                document.getElementById('allPolicies').style.background = `conic-gradient(
-                        #cfcfcc 0% 100%
-                    )`;
-                document.getElementById('notYet').innerText ="沒有資料"
-                document.getElementById('Testing').innerText="沒有資料"
-                document.getElementById('implemented').innerText ="沒有資料"
+                console.log("no data")
+                shownodata('.pie-box ');
             }
           </script> 
         <%- include("partials/footer") %>
